@@ -2,6 +2,8 @@ import {AbsoluteFill, Folder} from 'remotion';
 import TikTokSlide from './components/tiktok-slide';
 import TikTokSlideLayout from './components/tiktok-slide-layout';
 
+import StreamSchedule from './stills/stream-schedule-v1';
+
 import {
 	tablasEnHtml,
 	aprendamosHtml,
@@ -54,6 +56,9 @@ export const RemotionRoot: React.FC = () => {
 					</Folder>
 				);
 			})}
+			<Folder name="stream">
+				<StreamSchedule />
+			</Folder>
 		</>
 	);
 };
