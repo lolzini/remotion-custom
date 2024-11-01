@@ -19,37 +19,37 @@ export const schema = z.object({
 
 export const defaultProps = {
 	monday: {
-		activity: 'Programación',
+		activity: 'TEST Programación',
 		dayOfWeek: 'Lunes',
-		startTime: '19:00',
+		startTime: '1900',
 	},
 	tuesday: {
-		activity: 'Tacos',
+		activity: 'TEST Tacos',
 		dayOfWeek: 'Martes',
-		startTime: '19:00',
+		startTime: '1900',
 	},
 	wednesday: {
-		activity: 'Ceniza',
+		activity: 'TEST Ceniza',
 		dayOfWeek: 'Miércoles',
-		startTime: '19:00',
+		startTime: '1900',
 	},
 	thursday: {
-		activity: 'Juebebes',
+		activity: 'TEST Juebebes',
 		dayOfWeek: 'Jueves',
-		startTime: '19:00',
+		startTime: '1900',
 	},
 	friday: {
-		activity: 'Viernes Social',
+		activity: 'TEST Viernes Social',
 		dayOfWeek: 'Viernes',
-		startTime: '19:00',
+		startTime: '2200',
 	},
 	saturday: {
-		activity: 'OFFLINE',
+		activity: 'TEST OFFLINE',
 		dayOfWeek: 'Sábado',
 	},
 	sunday: {
-		activity: 'Misa',
+		activity: 'TEST Minecraft',
 		dayOfWeek: 'Domingo',
-		startTime: '19:00',
+		startTime: '0600',
 	},
 };

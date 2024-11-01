@@ -40,7 +40,7 @@ function Component(props: z.infer<typeof schema>) {
 					<section className="w-80" />
 					<section className="mx-10 flex flex-col gap-10">
 						{schedule.map((s, i) => (
-							<Card {...s} style={{marginLeft: `${3 * i}rem`}} />
+							<Card key={i} {...s} style={{marginLeft: `${3 * i}rem`}} />
 						))}
 					</section>
 				</div>
@@ -59,7 +59,10 @@ function Component(props: z.infer<typeof schema>) {
 
 function Card({dayOfWeek, activity, startTime, endTime, style}) {
 	return (
-		<article className="flex items-center gap-3 text-8xl" style={style}>
+		<article
+			className="relative flex items-center gap-3 text-8xl"
+			style={style}
+		>
 			<div
 				className={clsx(
 					'h-fit w-6 -skew-x-12 bg-pink-700 py-2 text-white text-opacity-0',
@@ -97,32 +100,25 @@ function Card({dayOfWeek, activity, startTime, endTime, style}) {
 				>
 					{activity}
 				</p>
-				{startTime ? (
-					<div className="mt-2 flex gap-2">
-						{Object.keys(convertedTimes).map((key) => {
-							return (
-								<p
-									className="-skew-x-12 bg-black bg-opacity-50 px-4 py-1 text-[2rem]"
-									style={{fontFamily: fontThree}}
-								>
-									<span>{convertedTimes[key]}</span>{' '}
-									<span className="w-fit" style={{fontFamily: fontEmoji}}>
-										{key}
-									</span>
-								</p>
-							);
-						})}
-					</div>
-				) : null}
+				{startTime ? <StartTimes time={startTime} /> : null}
 			</div>
+			{activity ? <Graphic activity={activity} /> : null}
 		</article>
 	);
 }
 
-function convertToMultipleTimeZonesWithFlags(timeString, timeZones) {
-	function convertTimeToTimeZone(timeString, timeZone) {
-		const [hour, minute] = timeString.split(':');
+function convertMilitaryTimeToHHMM(militaryTime) {
+	if (militaryTime.length !== 4 || isNaN(militaryTime)) return ['00', '00'];
 
+	const hours = militaryTime.slice(0, 2);
+	const minutes = militaryTime.slice(2);
+
+	return [hours, minutes];
+}
+
+function convertToMultipleTimeZonesWithFlags(time, timeZones) {
+	function convertTimeToTimeZone(time, timeZone) {
+		const [hour, minute] = convertMilitaryTimeToHHMM(time);
 		// Create a date object in CST (Central Standard Time, UTC-6)
 		const date = new Date();
 		date.setUTCHours(parseInt(hour) + 6, parseInt(minute), 0, 0); // Offset by +6 hours to UTC
@@ -149,13 +145,11 @@ function convertToMultipleTimeZonesWithFlags(timeString, timeZones) {
 	const results = {};
 	for (const [city, timeZone] of Object.entries(timeZones)) {
 		const flag = cityToFlagEmoji(city);
-		results[flag] = convertTimeToTimeZone(timeString, timeZone);
+		results[flag] = convertTimeToTimeZone(time, timeZone);
 	}
 	return results;
 }
 
-// Example usage
-const timeCST = '19:00';
 const timeZones = {
 	'Mexico City': 'America/Mexico_City',
 	'Buenos Aires': 'America/Argentina/Buenos_Aires',
@@ -163,4 +157,44 @@ const timeZones = {
 	Madrid: 'Europe/Madrid',
 };
 
-const convertedTimes = convertToMultipleTimeZonesWithFlags(timeCST, timeZones);
+function StartTimes({time}) {
+	const convertedTimes = convertToMultipleTimeZonesWithFlags(time, timeZones);
+
+	return (
+		<div className="mt-2 flex gap-2">
+			{Object.keys(convertedTimes).map((key, i) => {
+				return (
+					<p
+						key={i}
+						className="-skew-x-12 bg-black bg-opacity-50 px-4 py-1 text-[2rem]"
+						style={{fontFamily: fontThree}}
+					>
+						<span>{convertedTimes[key]}</span>{' '}
+						<span className="w-fit" style={{fontFamily: fontEmoji}}>
+							{key}
+						</span>
+					</p>
+				);
+			})}
+		</div>
+	);
+}
+
+function Graphic({activity}) {
+	if (activity.toLowerCase() === 'minecraft') {
+		return (
+			<div className="absolute right-0 max-w-24">
+				<Img src={staticFile('images/steve_archer.png')} />
+			</div>
+		);
+	}
+	if (activity.toLowerCase() === 'programación') {
+		return (
+			<div className="absolute right-40 max-w-80">
+				<Img src={staticFile('images/lolzini_work.png')} />
+			</div>
+		);
+	}
+
+	return null;
+}
