@@ -60,7 +60,7 @@ function Component(props: z.infer<typeof schema>) {
 function Card({dayOfWeek, activity, startTime, endTime, style}) {
 	return (
 		<article
-			className="relative flex items-center gap-3 text-8xl"
+			className="relative flex max-w-fit items-center gap-3 text-8xl"
 			style={style}
 		>
 			<div
@@ -190,7 +190,7 @@ function Graphic({activity}) {
 	}
 	if (activity.toLowerCase() === 'programación') {
 		return (
-			<div className="absolute right-40 max-w-80">
+			<div className="absolute -right-20 max-w-80">
 				<Img src={staticFile('images/lolzini_work.png')} />
 			</div>
 		);
