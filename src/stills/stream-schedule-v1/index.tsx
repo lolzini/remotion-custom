@@ -1,14 +1,22 @@
 import {AbsoluteFill, Img, Still, staticFile} from 'remotion';
 import {z} from 'zod';
 import clsx from 'clsx';
+
 import {loadFont as loadOne} from '@remotion/google-fonts/RockSalt';
 import {loadFont as loadTwo} from '@remotion/google-fonts/CoveredByYourGrace';
 import {loadFont as loadThree} from '@remotion/google-fonts/Mansalva';
 import {loadFont as loadEmoji} from '@remotion/google-fonts/NotoColorEmoji';
 
-import {defaultProps, daySchema, schema} from './helpers';
+import {
+	defaultProps,
+	daySchema,
+	schema,
+	getTimeZonesData,
+	getDayOfTheWeek,
+} from './helpers';
 
 import './style.css';
+import {CSSProperties} from 'react';
 
 const {fontFamily: fontCaveatBrush} = loadOne();
 const {fontFamily: fontTwo} = loadTwo();
@@ -29,18 +37,32 @@ export default function StreamSchedule() {
 }
 
 function Component(props: z.infer<typeof schema>) {
-	const schedule = Object.values<z.infer<typeof daySchema>>(props);
+	const {darkMode, days} = props;
 
 	return (
 		<>
-			<AbsoluteFill className="custom-background h-full w-full bg-[#1a1a1a]" />
+			<AbsoluteFill
+				className={clsx(
+					'custom-background h-full w-full',
+					{'bg-slate-50': !darkMode},
+					{
+						'bg-[#1a1a1a]': darkMode,
+					},
+				)}
+			/>
 
 			<AbsoluteFill style={{fontFamily: fontCaveatBrush}}>
 				<div className={clsx('flex h-full items-center justify-center')}>
 					<section className="w-80" />
 					<section className="mx-10 flex flex-col gap-10">
-						{schedule.map((s, i) => (
-							<Card key={i} {...s} style={{marginLeft: `${3 * i}rem`}} />
+						{days.map((s, i) => (
+							<Card
+								key={i}
+								{...s}
+								label={getDayOfTheWeek(i).slice(0, 3)}
+								darkMode={darkMode}
+								style={{marginLeft: `${3 * i}rem`}}
+							/>
 						))}
 					</section>
 				</div>
@@ -57,7 +79,19 @@ function Component(props: z.infer<typeof schema>) {
 	);
 }
 
-function Card({dayOfWeek, activity, startTime, endTime, style}) {
+function Card({
+	activity,
+	startTime,
+	style,
+	label,
+	darkMode,
+}: {
+	activity: string;
+	startTime?: string;
+	style?: CSSProperties;
+	label: string;
+	darkMode?: boolean;
+}) {
 	return (
 		<article
 			className="relative flex max-w-fit items-center gap-3 text-8xl"
@@ -65,26 +99,34 @@ function Card({dayOfWeek, activity, startTime, endTime, style}) {
 		>
 			<div
 				className={clsx(
-					'h-fit w-6 -skew-x-12 bg-pink-700 py-2 text-white text-opacity-0',
+					'h-fit w-6 -skew-x-12 py-2 text-white text-opacity-0',
+					{'bg-slate-700': !darkMode},
+					{'bg-pink-700': darkMode},
 				)}
 			>
 				x
 			</div>
 			<div
 				className={clsx(
-					'h-fit min-w-[24rem] -skew-x-12 bg-pink-700 px-10 py-2 text-right text-white',
+					'h-fit min-w-[24rem] -skew-x-12 px-10 py-2 text-right text-white',
+					{'bg-slate-700': !darkMode},
+					{'bg-pink-700': darkMode},
 					{
-						'bg-zinc-700': activity.toLowerCase() === 'offline',
+						'!bg-zinc-700': activity.toLowerCase() === 'offline',
+					},
+					{
+						'!bg-slate-900': activity.toLowerCase() === 'finalizado',
 					},
 				)}
 			>
 				<span
 					className={clsx(
-						'bg-gradient-to-tl from-zinc-400 via-zinc-200 to-white bg-clip-text text-transparent',
+						'bg-gradient-to-t from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent',
 						'bg-clip-text p-4 text-transparent',
+						'text-shadow',
 					)}
 				>
-					{dayOfWeek.slice(0, 3)}
+					{label}
 				</span>
 			</div>
 			<div
@@ -95,6 +137,7 @@ function Card({dayOfWeek, activity, startTime, endTime, style}) {
 					className={clsx(
 						'bg-gradient-to-tl from-zinc-400 via-zinc-200 to-white bg-clip-text text-transparent',
 						'z-50 -mb-6 bg-clip-text p-4 text-8xl font-bold uppercase text-transparent',
+						'text-shadow',
 						{'mb-2': activity.toLowerCase() === 'offline'},
 					)}
 				>
@@ -107,71 +150,21 @@ function Card({dayOfWeek, activity, startTime, endTime, style}) {
 	);
 }
 
-function convertMilitaryTimeToHHMM(militaryTime) {
-	if (militaryTime.length !== 4 || isNaN(militaryTime)) return ['00', '00'];
-
-	const hours = militaryTime.slice(0, 2);
-	const minutes = militaryTime.slice(2);
-
-	return [hours, minutes];
-}
-
-function convertToMultipleTimeZonesWithFlags(time, timeZones) {
-	function convertTimeToTimeZone(time, timeZone) {
-		const [hour, minute] = convertMilitaryTimeToHHMM(time);
-		// Create a date object in CST (Central Standard Time, UTC-6)
-		const date = new Date();
-		date.setUTCHours(parseInt(hour) + 6, parseInt(minute), 0, 0); // Offset by +6 hours to UTC
-
-		// Format the date in the target time zone
-		return new Intl.DateTimeFormat('es-ES', {
-			timeZone,
-			hour: '2-digit',
-			minute: '2-digit',
-			hour12: false,
-		}).format(date);
-	}
-
-	function cityToFlagEmoji(city) {
-		const flags = {
-			'Mexico City': '🇲🇽',
-			'Buenos Aires': '🇦🇷🇨🇱',
-			Lima: '🇵🇪🇨🇴',
-			Madrid: '🇪🇸',
-		};
-		return flags[city] || '';
-	}
-
-	const results = {};
-	for (const [city, timeZone] of Object.entries(timeZones)) {
-		const flag = cityToFlagEmoji(city);
-		results[flag] = convertTimeToTimeZone(time, timeZone);
-	}
-	return results;
-}
-
-const timeZones = {
-	'Mexico City': 'America/Mexico_City',
-	'Buenos Aires': 'America/Argentina/Buenos_Aires',
-	Lima: 'America/Lima',
-	Madrid: 'Europe/Madrid',
-};
-
-function StartTimes({time}) {
-	const convertedTimes = convertToMultipleTimeZonesWithFlags(time, timeZones);
+function StartTimes({time}: {time: string}) {
+	const convertedTimes = getTimeZonesData(time);
 
 	return (
 		<div className="mt-2 flex gap-2">
-			{Object.keys(convertedTimes).map((key, i) => {
+			{convertedTimes.map(({time, emoji}, i) => {
 				return (
 					<p
 						key={i}
-						className="-skew-x-12 bg-black bg-opacity-50 px-4 py-1 text-[2rem]"
+						className="-skew-x-12 bg-slate-950 px-4 py-1 text-[2rem]"
 						style={{fontFamily: fontThree}}
 					>
-						<span>{convertedTimes[key]}</span>{' '}
+						<span>{time}</span>{' '}
 						<span className="w-fit" style={{fontFamily: fontEmoji}}>
-							{key}
+							{emoji}
 						</span>
 					</p>
 				);
@@ -180,18 +173,26 @@ function StartTimes({time}) {
 	);
 }
 
-function Graphic({activity}) {
+function Graphic({activity}: {activity: string}) {
 	if (activity.toLowerCase() === 'minecraft') {
 		return (
 			<div className="absolute right-0 max-w-24">
-				<Img src={staticFile('images/steve_archer.png')} />
+				<Img
+					className="char-shadow"
+					style={{'--shadow-size': '0.05rem'}}
+					src={staticFile('images/steve_archer.png')}
+				/>
 			</div>
 		);
 	}
 	if (activity.toLowerCase() === 'programación') {
 		return (
 			<div className="absolute -right-20 max-w-80">
-				<Img src={staticFile('images/lolzini_work.png')} />
+				<Img
+					className="char-shadow"
+					style={{'--shadow-size': '0.05rem'}}
+					src={staticFile('images/lolzini_work.png')}
+				/>
 			</div>
 		);
 	}
