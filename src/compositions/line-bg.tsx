@@ -6,7 +6,7 @@ const Component = () => {
 
 	return (
 		<>
-			<AbsoluteFill className="bg-gradient-to-l from-gray-500 to-neutral-500" />
+			<AbsoluteFill className="bg-gradient-to-t from-neutral-50 to-neutral-200" />
 			<AbsoluteFill style={{transform: `translateX(-128px)`}}>
 				<div
 					className="flex h-full gap-[120px]"
@@ -25,7 +25,7 @@ const Component = () => {
 
 function Line() {
 	return (
-		<div className="h-full min-w-[120px] -skew-x-[16deg] bg-white bg-opacity-25" />
+		<div className="h-full min-w-[120px] -skew-x-[16deg] bg-black bg-opacity-5" />
 	);
 }
 

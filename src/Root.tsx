@@ -17,6 +17,7 @@ import CheckerBg from './compositions/checker-bg';
 import LineBg from './compositions/line-bg';
 
 import './style.css';
+import DotBg from './compositions/dot-bg';
 
 const folders = [
 	{...convencionesDeNombramiento},
@@ -62,6 +63,7 @@ export const RemotionRoot: React.FC = () => {
 				<StreamSchedule />
 				<LineBg />
 				<CheckerBg />
+				<DotBg />
 			</Folder>
 		</>
 	);

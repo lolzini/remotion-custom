@@ -7,11 +7,11 @@ const Component = () => {
 
 	return (
 		<>
-			<AbsoluteFill className="bg-gradient-to-bl from-gray-500 to-neutral-500" />
+			<AbsoluteFill className="bg-gradient-to-bl from-neutral-50 to-neutral-200" />
 			<AbsoluteFill className="h-full w-full">
 				<section className="-translate-x-[120px] -translate-y-[240px] rotate-12">
 					<div style={{transform: `translateX(${translateX}px)`}}>
-						{Array(12)
+						{Array(16)
 							.fill(null)
 							.map((_, i) => (
 								<div
@@ -34,7 +34,7 @@ const Component = () => {
 };
 
 function Square() {
-	return <div className="h-[120px] w-[120px] bg-white bg-opacity-25" />;
+	return <div className="h-[120px] w-[120px] bg-black bg-opacity-5" />;
 }
 
 export default () => (
