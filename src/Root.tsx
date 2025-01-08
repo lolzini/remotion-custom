@@ -3,6 +3,10 @@ import TikTokSlide from './components/tiktok-slide';
 import TikTokSlideLayout from './components/tiktok-slide-layout';
 
 import StreamSchedule from './stills/stream-schedule-v1';
+import DuolingoClub from './stills/duolingo-club';
+import CoverTwitch from './stills/cover-twitch';
+import CoverX from './stills/cover-x';
+import CoverYouTube from './stills/cover-youtube';
 
 import {
 	tablasEnHtml,
@@ -15,6 +19,7 @@ import {
 } from './stills';
 
 import './style.css';
+import Goals2025 from './stills/goals-2025';
 
 const folders = [
 	{...convencionesDeNombramiento},
@@ -45,7 +50,7 @@ export const RemotionRoot: React.FC = () => {
 									<Render />
 									{i === slides.length - 1 ? null : (
 										<AbsoluteFill>
-											<span className="text-xs text-right text-white/10">
+											<span className="text-right text-xs text-white/10">
 												{title} {i + 1}/{slides.length - 1}
 											</span>
 										</AbsoluteFill>
@@ -58,6 +63,13 @@ export const RemotionRoot: React.FC = () => {
 			})}
 			<Folder name="stream">
 				<StreamSchedule />
+				<DuolingoClub />
+				<CoverTwitch />
+				<CoverX />
+				<CoverYouTube />
+			</Folder>
+			<Folder name="posts">
+				<Goals2025 />
 			</Folder>
 		</>
 	);
