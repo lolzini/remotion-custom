@@ -3,6 +3,10 @@ import TikTokSlide from './components/tiktok-slide';
 import TikTokSlideLayout from './components/tiktok-slide-layout';
 
 import StreamSchedule from './stills/stream-schedule-v1';
+import DuolingoClub from './stills/duolingo-club';
+import CoverTwitch from './stills/cover-twitch';
+import CoverX from './stills/cover-x';
+import CoverYouTube from './stills/cover-youtube';
 
 import {
 	tablasEnHtml,
@@ -18,6 +22,7 @@ import LineBg from './compositions/line-bg';
 
 import './style.css';
 import DotBg from './compositions/dot-bg';
+import Goals2025 from './stills/goals-2025';
 
 const folders = [
 	{...convencionesDeNombramiento},
@@ -64,6 +69,13 @@ export const RemotionRoot: React.FC = () => {
 				<LineBg />
 				<CheckerBg />
 				<DotBg />
+				<DuolingoClub />
+				<CoverTwitch />
+				<CoverX />
+				<CoverYouTube />
+			</Folder>
+			<Folder name="posts">
+				<Goals2025 />
 			</Folder>
 		</>
 	);

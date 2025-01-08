@@ -1,0 +1,83 @@
+.post-it-container {
+	perspective: 800px; /* Creates a 3D perspective effect */
+	transform-style: preserve-3d; /* Ensures children are rendered in 3D */
+}
+
+.post-it:nth-child(1) {
+	transform: rotateZ(-5deg) rotateX(3deg);
+}
+
+.post-it:nth-child(2) {
+	transform: rotateZ(3deg) rotateX(-2deg);
+}
+
+.post-it:nth-child(3) {
+	transform: rotateZ(-8deg) rotateX(4deg);
+}
+
+.post-it:nth-child(4) {
+	transform: rotateZ(6deg) rotateX(-3deg);
+}
+
+.post-it:nth-child(5) {
+	transform: rotateZ(-2deg) rotateX(2deg);
+}
+
+.post-it:nth-child(6) {
+	transform: rotateZ(4deg) rotateX(5deg);
+}
+
+.post-it:nth-child(7) {
+	transform: rotateZ(-6deg) rotateX(1deg);
+}
+
+.post-it:nth-child(8) {
+	transform: rotateZ(2deg) rotateX(-4deg);
+}
+
+.post-it:nth-child(9) {
+	transform: rotateZ(-7deg) rotateX(3deg);
+}
+
+.post-it:nth-child(10) {
+	transform: rotateZ(5deg) rotateX(-2deg);
+}
+
+.tape {
+	background-color: hsla(0, 0%, 100%, 0.2);
+	box-shadow: inset 0 0 1em 0.5em hsla(0, 0%, 100%, 0.1);
+	position: absolute;
+	filter: drop-shadow(0 1px 1px hsla(0, 0%, 0%, 0.3));
+}
+
+.tape:after,
+.tape:before {
+	background-size: 0.4em 0.4em;
+	bottom: 0;
+	content: '';
+	position: absolute;
+	top: 0;
+	width: 0.2em;
+}
+
+.tape:after {
+	background-image: linear-gradient(
+			45deg,
+			transparent 50%,
+			hsla(0, 0%, 100%, 0.3) 50%
+		),
+		linear-gradient(-45deg, transparent 50%, hsla(0, 0%, 100%, 0.3) 50%);
+	background-position: 0 100%;
+	left: -0.2em;
+}
+
+.tape:before {
+	background-image: linear-gradient(
+			135deg,
+			transparent 50%,
+			hsla(0, 0%, 100%, 0.3) 50%
+		),
+		linear-gradient(-135deg, transparent 50%, hsla(0, 0%, 100%, 0.3) 50%);
+	background-position: 100% 100%;
+	right: -0.2em;
+}
