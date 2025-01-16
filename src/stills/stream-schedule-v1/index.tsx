@@ -1,27 +1,28 @@
 import {AbsoluteFill, Img, Still, staticFile} from 'remotion';
 import {z} from 'zod';
 import clsx from 'clsx';
+import {CSSProperties} from 'react';
 
 import {loadFont as loadOne} from '@remotion/google-fonts/RockSalt';
 import {loadFont as loadTwo} from '@remotion/google-fonts/CoveredByYourGrace';
 import {loadFont as loadThree} from '@remotion/google-fonts/Mansalva';
+import {loadFont as load4} from '@remotion/google-fonts/ShantellSans';
 import {loadFont as loadEmoji} from '@remotion/google-fonts/NotoColorEmoji';
 
 import {
 	defaultProps,
-	daySchema,
 	schema,
 	getTimeZonesData,
 	getDayOfTheWeek,
 } from './helpers';
 
 import './style.css';
-import {CSSProperties} from 'react';
 
 const {fontFamily: fontCaveatBrush} = loadOne();
 const {fontFamily: fontTwo} = loadTwo();
 const {fontFamily: fontThree} = loadThree();
 const {fontFamily: fontEmoji} = loadEmoji();
+const {fontFamily: font4} = load4();
 
 export default function StreamSchedule() {
 	return (
@@ -37,7 +38,7 @@ export default function StreamSchedule() {
 }
 
 function Component(props: z.infer<typeof schema>) {
-	const {darkMode, days} = props;
+	const {darkMode, days, from, to} = props;
 
 	return (
 		<>
@@ -67,13 +68,29 @@ function Component(props: z.infer<typeof schema>) {
 					</section>
 				</div>
 
-				<AbsoluteFill>
-					<Img
-						className="char-shadow absolute -bottom-20 -left-64 h-[44rem]"
-						src={staticFile('/images/hpp1.png')}
-						alt=""
-					/>
-				</AbsoluteFill>
+				<Img
+					className="char-shadow absolute -bottom-20 -left-64 h-[44rem]"
+					src={staticFile('/images/hpp1.png')}
+					alt=""
+				/>
+			</AbsoluteFill>
+			<AbsoluteFill>
+				<div
+					className="absolute right-24 top-8 origin-center skew-x-12 bg-green-500 px-2 py-4 text-7xl font-bold shadow [writing-mode:vertical-lr]"
+					style={{fontFamily: font4}}
+				>
+					<span
+						className={clsx(
+							'bg-gradient-to-l from-white via-zinc-100 to-zinc-300 bg-clip-text text-transparent',
+							'bg-clip-text p-4 text-transparent',
+						)}
+					>
+						<span className="capitalize">
+							{from.toLocaleString('es-MX', {month: 'short'})}
+						</span>{' '}
+						{from.getDate()} - {to.getDate()}
+					</span>
+				</div>
 			</AbsoluteFill>
 		</>
 	);
@@ -102,6 +119,12 @@ function Card({
 					'h-fit w-6 -skew-x-12 py-2 text-white text-opacity-0',
 					{'bg-slate-700': !darkMode},
 					{'bg-pink-700': darkMode},
+					{
+						'!bg-zinc-700': activity.toLowerCase() === 'offline',
+					},
+					{
+						'!bg-slate-900': activity.toLowerCase() === 'finalizado',
+					},
 				)}
 			>
 				x
