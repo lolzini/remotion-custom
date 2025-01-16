@@ -23,6 +23,7 @@ import LineBg from './compositions/line-bg';
 import './style.css';
 import DotBg from './compositions/dot-bg';
 import Goals2025 from './stills/goals-2025';
+import DotBgOriginal from './compositions/dot-bg-original';
 
 const folders = [
 	{...convencionesDeNombramiento},
@@ -69,6 +70,7 @@ export const RemotionRoot: React.FC = () => {
 				<LineBg />
 				<CheckerBg />
 				<DotBg />
+				<DotBgOriginal />
 				<DuolingoClub />
 				<CoverTwitch />
 				<CoverX />
