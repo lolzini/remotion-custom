@@ -74,6 +74,7 @@ function Component(props: z.infer<typeof schema>) {
 					alt=""
 				/>
 			</AbsoluteFill>
+
 			<AbsoluteFill>
 				<div
 					className="absolute right-24 top-8 origin-center skew-x-12 bg-green-500 px-2 py-4 text-7xl font-bold shadow [writing-mode:vertical-lr]"
@@ -90,6 +91,42 @@ function Component(props: z.infer<typeof schema>) {
 						</span>{' '}
 						{from.getDate()} - {to.getDate()}
 					</span>
+				</div>
+			</AbsoluteFill>
+
+			<AbsoluteFill>
+				<div
+					className="absolute left-10 top-[45%] flex -translate-y-1/2 flex-col gap-6 text-5xl font-bold"
+					style={{fontFamily: fontThree}}
+				>
+					<p className="flex -skew-x-12 items-center gap-4">
+						<svg
+							stroke="currentColor"
+							fill="currentColor"
+							stroke-width="0"
+							viewBox="0 0 448 512"
+							height="64px"
+							width="64px"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z" />
+						</svg>
+						<span>lolzini_es</span>
+					</p>
+					<p className="ml-8 flex -skew-x-12 items-center gap-4">
+						<svg
+							stroke="currentColor"
+							fill="currentColor"
+							stroke-width="0"
+							viewBox="0 0 512 512"
+							height="64px"
+							width="64px"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<path d="M391.17,103.47H352.54v109.7h38.63ZM285,103H246.37V212.75H285ZM120.83,0,24.31,91.42V420.58H140.14V512l96.53-91.42h77.25L487.69,256V0ZM449.07,237.75l-77.22,73.12H294.61l-67.6,64v-64H140.14V36.58H449.07Z" />
+						</svg>
+						<span>lolzini_es</span>
+					</p>
 				</div>
 			</AbsoluteFill>
 		</>
@@ -181,7 +218,7 @@ function StartTimes({time}: {time: string}) {
 			{convertedTimes.map(({time, emoji}, i) => {
 				return (
 					<p
-						key={i}
+						key={`times-${i}`}
 						className="-skew-x-12 bg-slate-950 px-4 py-1 text-[2rem]"
 						style={{fontFamily: fontThree}}
 					>
