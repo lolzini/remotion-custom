@@ -18,6 +18,8 @@ import {
 	convencionesDeNombramiento,
 } from './stills';
 
+import Comp1 from './compositions/comp1';
+
 import './style.css';
 import Goals2025 from './stills/goals-2025';
 
@@ -70,6 +72,9 @@ export const RemotionRoot: React.FC = () => {
 			</Folder>
 			<Folder name="posts">
 				<Goals2025 />
+			</Folder>
+			<Folder name="videos">
+				<Comp1 />
 			</Folder>
 		</>
 	);
