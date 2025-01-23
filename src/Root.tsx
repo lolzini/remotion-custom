@@ -1,4 +1,4 @@
-import {AbsoluteFill, Folder} from 'remotion';
+import {AbsoluteFill, Folder, Still} from 'remotion';
 import TikTokSlide from './components/tiktok-slide';
 import TikTokSlideLayout from './components/tiktok-slide-layout';
 
@@ -17,11 +17,15 @@ import {
 	operadoresAritmeticos,
 	convencionesDeNombramiento,
 } from './stills';
+import CheckerBg from './compositions/checker-bg';
+import LineBg from './compositions/line-bg';
 
 import Comp1 from './compositions/comp1';
 
 import './style.css';
+import DotBg from './compositions/dot-bg';
 import Goals2025 from './stills/goals-2025';
+import DotBgOriginal from './compositions/dot-bg-original';
 
 const folders = [
 	{...convencionesDeNombramiento},
@@ -35,9 +39,9 @@ const folders = [
 ];
 
 type SlideFolder = {
-	id: string;
-	title?: string;
-	slides: React.FC[];
+	readonly id: string;
+	readonly title?: string;
+	readonly slides: React.FC[];
 };
 
 export const RemotionRoot: React.FC = () => {
@@ -65,6 +69,10 @@ export const RemotionRoot: React.FC = () => {
 			})}
 			<Folder name="stream">
 				<StreamSchedule />
+				<LineBg />
+				<CheckerBg />
+				<DotBg />
+				<DotBgOriginal />
 				<DuolingoClub />
 				<CoverTwitch />
 				<CoverX />

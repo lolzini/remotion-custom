@@ -15,21 +15,21 @@
 		}
 	},
 	"dependencies": {
-		"@remotion/bundler": "4.0.206",
-		"@remotion/cli": "4.0.206",
-		"@remotion/google-fonts": "4.0.206",
-		"@remotion/zod-types": "4.0.206",
+		"@remotion/bundler": "4.0.244",
+		"@remotion/cli": "4.0.244",
+		"@remotion/google-fonts": "4.0.244",
+		"@remotion/zod-types": "4.0.244",
 		"clsx": "^2.1.1",
 		"moment-timezone": "^0.5.45",
 		"react": "^18.0.0",
 		"react-dom": "^18.0.0",
 		"react-syntax-highlighter": "^15.5.0",
-		"remotion": "4.0.206",
+		"remotion": "4.0.244",
 		"zod": "3.22.3"
 	},
 	"devDependencies": {
-		"@remotion/eslint-config": "4.0.206",
-		"@remotion/tailwind": "4.0.206",
+		"@remotion/eslint-config": "4.0.244",
+		"@remotion/tailwind": "4.0.244",
 		"@types/react": "^18.0.26",
 		"@types/web": "^0.0.143",
 		"eslint": "^8.43.0",
