@@ -21,9 +21,7 @@ export default ({children, className, fromY = 100, toY = 0, style = {}}) => {
 			className={className}
 			style={{
 				position: 'absolute',
-				top: '50%',
-				left: '50%',
-				transform: `translate(-50%, -50%) translateY(${translateY}%)`,
+				transform: `translateY(${translateY}vh)`,
 				...style,
 			}}
 		>

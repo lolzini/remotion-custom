@@ -1,15 +1,15 @@
 import {spring, useCurrentFrame, useVideoConfig} from 'remotion';
 
-export default function Dissolve({
+export default function Shrink({
 	children,
-	fromOpacity = 0,
-	toOpacity = 1,
+	fromScale = 2,
+	toScale = 1,
 	durationInFrames = 30,
 }) {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
 
-	const opacity = spring({
+	const scale = spring({
 		frame,
 		fps,
 		config: {
@@ -17,14 +17,16 @@ export default function Dissolve({
 			stiffness: 100,
 		},
 		durationInFrames,
-		from: fromOpacity,
-		to: toOpacity,
+		from: fromScale,
+		to: toScale,
 	});
 
 	return (
 		<div
+			className="h-fit w-fit"
 			style={{
-				opacity,
+				transformOrigin: '50% 50%',
+				transform: `scale(${scale})`,
 			}}
 		>
 			{children}
