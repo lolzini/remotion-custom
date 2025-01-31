@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import {loadFont} from '@remotion/google-fonts/ShantellSans';
 import {ReactNode} from 'react';
 
+import {loadFont} from '@remotion/google-fonts/ShantellSans';
 const {fontFamily} = loadFont();
 
 const colors = {
@@ -35,7 +35,7 @@ export default function Rect({
 	return (
 		<div
 			className={clsx(
-				'min-w-fit max-w-fit rounded-md border-[6px] border-black bg-zinc-300 p-6 text-4xl font-bold',
+				'h-fit min-w-fit max-w-fit rounded-md border-[6px] p-6 text-center text-4xl font-bold',
 				colors[color],
 				className,
 			)}

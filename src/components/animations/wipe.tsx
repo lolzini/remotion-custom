@@ -1,6 +1,12 @@
 import {spring, useCurrentFrame, useVideoConfig} from 'remotion';
 
-export default ({children, className, fromY = 100, toY = 0, style = {}}) => {
+export default ({
+	children,
+	className = '',
+	fromY = 100,
+	toY = 0,
+	style = {},
+}) => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
 

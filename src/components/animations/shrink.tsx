@@ -5,9 +5,15 @@ export default function Shrink({
 	fromScale = 2,
 	toScale = 1,
 	durationInFrames = 30,
+	reverse = false, // Add reverse prop
 }) {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
+
+	// Determine the from and to values based on reverse prop
+	const [startScale, endScale] = reverse
+		? [toScale, fromScale]
+		: [fromScale, toScale];
 
 	const scale = spring({
 		frame,
@@ -17,8 +23,8 @@ export default function Shrink({
 			stiffness: 100,
 		},
 		durationInFrames,
-		from: fromScale,
-		to: toScale,
+		from: startScale,
+		to: endScale,
 	});
 
 	return (
