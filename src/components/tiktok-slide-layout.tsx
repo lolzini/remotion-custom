@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import {DottedPaper} from './dotted-paper';
 
 export default function TikTokSlideLayout({
@@ -6,11 +7,18 @@ export default function TikTokSlideLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<div className="bg-[#1a1a1a] w-full h-full relative">
-			<main className=" absolute h-[656px] top-[154px] left-[35px] w-[472px] text-[#eeeeee] z-10">
-				{children}
-			</main>
-			<DottedPaper className="invert z-0" r={0.5} />
-		</div>
+		<>
+			<div
+				className={clsx(
+					'bg-gradient-to-bl from-neutral-50 to-neutral-200',
+					'relative h-full w-full',
+				)}
+			>
+				<main className="absolute left-[35px] top-[154px] z-10 h-[656px] w-[472px]">
+					{children}
+				</main>
+			</div>
+			<DottedPaper className="z-0 opacity-20 invert" r={2} />
+		</>
 	);
 }

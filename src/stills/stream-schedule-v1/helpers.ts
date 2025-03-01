@@ -45,27 +45,27 @@ export const defaultProps = {
 	to: toDate,
 	days: [
 		{
-			activity: 'Programación',
+			activity: 'finalizado',
 			dayOfWeek: 'Lunes',
 			startTime: '1900',
 		},
 		{
-			activity: 'Programación',
+			activity: 'tirar código',
 			dayOfWeek: 'Martes',
 			startTime: '1900',
 		},
 		{
-			activity: 'Programación',
+			activity: 'tirar código',
 			dayOfWeek: 'Miércoles',
 			startTime: '1900',
 		},
 		{
-			activity: 'Programación',
+			activity: 'tirar código',
 			dayOfWeek: 'Jueves',
 			startTime: '1900',
 		},
 		{
-			activity: 'Programación',
+			activity: 'social / casual',
 			dayOfWeek: 'Viernes',
 			startTime: '1900',
 		},

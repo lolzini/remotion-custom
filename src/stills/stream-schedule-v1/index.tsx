@@ -69,8 +69,8 @@ function Component(props: z.infer<typeof schema>) {
 				</div>
 
 				<Img
-					className="char-shadow absolute -bottom-20 -left-64 h-[44rem]"
-					src={staticFile('/images/hpp1.png')}
+					className="absolute -bottom-20 -left-28 h-[44rem]"
+					src={staticFile('/images/lolzini_hi.png')}
 					alt=""
 				/>
 			</AbsoluteFill>
@@ -96,7 +96,7 @@ function Component(props: z.infer<typeof schema>) {
 
 			<AbsoluteFill>
 				<div
-					className="absolute left-10 top-[45%] flex -translate-y-1/2 flex-col gap-6 text-5xl font-bold"
+					className="absolute left-10 top-[33%] flex -translate-y-1/2 flex-col-reverse gap-6 text-5xl font-bold"
 					style={{fontFamily: fontThree}}
 				>
 					<p className="flex -skew-x-12 items-center gap-4">
@@ -113,8 +113,9 @@ function Component(props: z.infer<typeof schema>) {
 						</svg>
 						<span>lolzini_es</span>
 					</p>
-					<p className="ml-8 flex -skew-x-12 items-center gap-4">
+					<p className="flex -skew-x-12 items-center gap-4">
 						<svg
+							className="text-[#6441a5]"
 							stroke="currentColor"
 							fill="currentColor"
 							stroke-width="0"
@@ -126,6 +127,21 @@ function Component(props: z.infer<typeof schema>) {
 							<path d="M391.17,103.47H352.54v109.7h38.63ZM285,103H246.37V212.75H285ZM120.83,0,24.31,91.42V420.58H140.14V512l96.53-91.42h77.25L487.69,256V0ZM449.07,237.75l-77.22,73.12H294.61l-67.6,64v-64H140.14V36.58H449.07Z" />
 						</svg>
 						<span>lolzini_es</span>
+					</p>
+					<p className="flex -skew-x-12 items-center gap-4">
+						<svg
+							className="text-[#ff0000]"
+							stroke="currentColor"
+							fill="currentColor"
+							stroke-width="0"
+							viewBox="0 0 576 512"
+							height="64px"
+							width="64px"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z" />
+						</svg>
+						<span>lolzini</span>
 					</p>
 				</div>
 			</AbsoluteFill>
@@ -214,7 +230,7 @@ function StartTimes({time}: {time: string}) {
 	const convertedTimes = getTimeZonesData(time);
 
 	return (
-		<div className="mt-2 flex gap-2">
+		<div className="z-50 mt-2 flex gap-2">
 			{convertedTimes.map(({time, emoji}, i) => {
 				return (
 					<p
@@ -234,6 +250,16 @@ function StartTimes({time}: {time: string}) {
 }
 
 function Graphic({activity}: {activity: string}) {
+	if (activity.toLowerCase().includes('social')) {
+		return (
+			<div className="absolute bottom-2 right-0 max-w-40">
+				<Img
+					style={{'--shadow-size': '0.05rem'}}
+					src={staticFile('images/lolzini_tuxedo.png')}
+				/>
+			</div>
+		);
+	}
 	if (activity.toLowerCase() === 'minecraft') {
 		return (
 			<div className="absolute right-0 max-w-24">
@@ -245,7 +271,9 @@ function Graphic({activity}: {activity: string}) {
 			</div>
 		);
 	}
-	if (activity.toLowerCase() === 'programación') {
+	if (
+		['programación', 'tirar código', 'video'].includes(activity.toLowerCase())
+	) {
 		return (
 			<div className="absolute -right-20 max-w-80">
 				<Img

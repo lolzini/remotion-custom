@@ -2,7 +2,7 @@ import clsx from 'clsx';
 
 export function DottedPaper({
 	className,
-	fill = '#000',
+	fill = 'white',
 	r = 2,
 	x = 20,
 	y = 20,
