@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import {AbsoluteFill, Composition, useCurrentFrame} from 'remotion';
 import {z} from 'zod';
+import Dot from '../components/dot';
 
 const schema = z.object({rotate: z.boolean()});
 
@@ -37,12 +38,6 @@ const Component: React.FC<z.infer<typeof schema>> = ({rotate}) => {
 		</>
 	);
 };
-
-function Dot() {
-	return (
-		<div className="h-[6px] w-[6px] rounded-full bg-black bg-opacity-10" />
-	);
-}
 
 export default () => (
 	<Composition
