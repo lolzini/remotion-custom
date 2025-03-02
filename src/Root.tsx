@@ -1,4 +1,4 @@
-import {AbsoluteFill, Folder, Still} from 'remotion';
+import {AbsoluteFill, Folder} from 'remotion';
 import TikTokSlide from './components/tiktok-slide';
 import TikTokSlideLayout from './components/tiktok-slide-layout';
 
@@ -26,6 +26,7 @@ import './style.css';
 import DotBg from './compositions/dot-bg';
 import Goals2025 from './stills/goals-2025';
 import DotBgOriginal from './compositions/dot-bg-original';
+import Thumbnail from './thumbnails/thumbnail';
 
 const folders = [
 	{...convencionesDeNombramiento},
@@ -83,6 +84,9 @@ export const RemotionRoot: React.FC = () => {
 			</Folder>
 			<Folder name="videos">
 				<Comp1 />
+			</Folder>
+			<Folder name="thumbnails">
+				<Thumbnail />
 			</Folder>
 		</>
 	);
