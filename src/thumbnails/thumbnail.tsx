@@ -52,7 +52,7 @@ const Component: React.FC<z.infer<typeof schema>> = ({noise, title, image}) => {
 										.fill(null)
 										.map(() => (
 											<div className="flex min-h-[60px] min-w-[60px] items-center justify-center">
-												<Dot />
+												<Dot size={9} />
 											</div>
 										))}
 								</div>

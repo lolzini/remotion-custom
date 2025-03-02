@@ -1,5 +1,16 @@
-export default function Dot() {
+interface DotProps {
+	size?: number;
+}
+
+export default function Dot({size = 6}: DotProps) {
 	return (
-		<div className="h-[6px] w-[6px] rounded-full bg-black bg-opacity-10" />
+		<div
+			style={{
+				height: `${size}px`,
+				width: `${size}px`,
+				borderRadius: '9999px',
+				backgroundColor: 'rgba(0, 0, 0, 0.1)',
+			}}
+		/>
 	);
 }
