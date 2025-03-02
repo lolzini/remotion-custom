@@ -10,14 +10,14 @@ export function DottedPaper({
 	cy = 10,
 	size = 48,
 }: {
-	className?: string;
-	fill?: string;
-	r?: number;
-	x?: number;
-	y?: number;
-	cx?: number;
-	cy?: number;
-	size?: number;
+	readonly className?: string;
+	readonly fill?: string;
+	readonly r?: number;
+	readonly x?: number;
+	readonly y?: number;
+	readonly cx?: number;
+	readonly cy?: number;
+	readonly size?: number;
 }) {
 	return (
 		<>
