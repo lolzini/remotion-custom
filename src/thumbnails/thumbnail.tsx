@@ -62,12 +62,7 @@ const Component: React.FC<z.infer<typeof schema>> = ({noise, title, image}) => {
 			</AbsoluteFill>
 			{noise ? (
 				<AbsoluteFill>
-					<NoiseFilter
-						transparency={0.06}
-						// baseFrequency={1}
-						numOctaves={2}
-						// specularConstant={16}
-					/>
+					<NoiseFilter transparency={0.06} numOctaves={2} />
 				</AbsoluteFill>
 			) : null}
 			<AbsoluteFill style={{fontFamily}}>
