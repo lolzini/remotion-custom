@@ -18,11 +18,15 @@ const TITLE_X = 300;
 const TITLE_Y = -100;
 
 const IMAGE_SIZE = 200;
-const IMAGE_X = -560;
-const IMAGE_Y = 256;
+const IMAGE_X = -640;
+const IMAGE_Y = 320;
+
+const AvatarSource = z.enum(['speaking', 'thinking']);
 
 const schema = z.object({
 	noise: z.boolean().default(true),
+	liveIndicator: z.boolean().default(true),
+	avatarSource: AvatarSource.default('speaking'),
 	title: z.object({
 		text: z.string(),
 		size: z.number().default(TITLE_SIZE),
@@ -37,7 +41,13 @@ const schema = z.object({
 	}),
 });
 
-const Component: React.FC<z.infer<typeof schema>> = ({noise, title, image}) => {
+const Component: React.FC<z.infer<typeof schema>> = ({
+	noise,
+	liveIndicator,
+	avatarSource,
+	title,
+	image,
+}) => {
 	return (
 		<>
 			<AbsoluteFill className="bg-gradient-to-bl from-neutral-50 to-neutral-200" />
@@ -85,7 +95,7 @@ const Component: React.FC<z.infer<typeof schema>> = ({noise, title, image}) => {
 			<AbsoluteFill>
 				<Img
 					className="custom-stroke-lg"
-					src={staticFile('lolzini/avatar--speaking.png')}
+					src={staticFile(`lolzini/avatar--${avatarSource}.png`)}
 					style={{
 						position: 'absolute',
 						left: '50%',
@@ -97,25 +107,32 @@ const Component: React.FC<z.infer<typeof schema>> = ({noise, title, image}) => {
 				/>
 
 				<div
-					className="m-5 flex w-fit items-center gap-2 rounded-md bg-neutral-600 px-4 py-1 text-9xl font-bold text-white shadow-lg"
+					className={clsx(
+						'm-5 flex w-fit items-center gap-2 rounded-md px-4 py-1 text-9xl font-bold shadow-lg',
+						liveIndicator
+							? 'bg-neutral-600 text-white'
+							: 'bg-red-600 text-white',
+					)}
 					style={{fontFamily: inter}}
 				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="6rem"
-						height="6rem"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						className="lucide lucide-history"
-					>
-						<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-						<path d="M3 3v5h5" />
-						<path d="M12 7v5l4 2" />
-					</svg>
+					{liveIndicator && (
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="6rem"
+							height="6rem"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							className="lucide lucide-history"
+						>
+							<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+							<path d="M3 3v5h5" />
+							<path d="M12 7v5l4 2" />
+						</svg>
+					)}
 					<span>LIVE</span>
 				</div>
 			</AbsoluteFill>
@@ -132,6 +149,8 @@ export default () => (
 		schema={schema}
 		defaultProps={{
 			noise: true,
+			liveIndicator: true,
+			avatarSource: 'speaking',
 			title: {
 				text: 'Mi título aquí',
 				lineHeight: TITLE_LINE_HEIGHT,

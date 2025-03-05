@@ -1,7 +1,7 @@
 .custom-stroke {
 	--stroke-color: white;
 	--stroke-width: 0.016em;
-	--shadow-blur: 0.01em;
+	--shadow-blur: 0.001em;
 	filter: drop-shadow(var(--stroke-width) 0 var(--stroke-color)) /* Right */
 		drop-shadow(calc(var(--stroke-width) * -1) 0 var(--stroke-color)) /* Left */
 		drop-shadow(0 var(--stroke-width) var(--stroke-color)) /* Bottom */
