@@ -17,6 +17,7 @@
 	"dependencies": {
 		"@remotion/bundler": "4.0.244",
 		"@remotion/cli": "4.0.244",
+		"@remotion/fonts": "^4.0.273",
 		"@remotion/google-fonts": "4.0.244",
 		"@remotion/zod-types": "4.0.244",
 		"clsx": "^2.1.1",

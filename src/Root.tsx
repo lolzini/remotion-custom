@@ -27,6 +27,7 @@ import DotBg from './compositions/dot-bg';
 import Goals2025 from './stills/goals-2025';
 import DotBgOriginal from './compositions/dot-bg-original';
 import Thumbnail from './thumbnails/thumbnail';
+import Emoji from './emoji';
 
 const folders = [
 	{...convencionesDeNombramiento},
@@ -87,6 +88,7 @@ export const RemotionRoot: React.FC = () => {
 			</Folder>
 			<Folder name="thumbnails">
 				<Thumbnail />
+				<Emoji />
 			</Folder>
 		</>
 	);
