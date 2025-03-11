@@ -1,27 +1,12 @@
-import {AbsoluteFill, staticFile, Still} from 'remotion';
+import {AbsoluteFill, Still} from 'remotion';
 import {z} from 'zod';
 import {zTextarea} from '@remotion/zod-types';
 
-import {loadFont} from '@remotion/fonts';
-import {loadFont as loadNotoColorEmoji} from '@remotion/google-fonts/NotoColorEmoji';
-
-loadFont({
-	family: 'Segoe UI Emoji',
-	url: staticFile('fonts/self-compiled-flat.ttf'),
-}).then(() => {
-	console.log('Font loaded!');
-});
-const {fontFamily: NotoColorEmoji} = loadNotoColorEmoji();
-
-const FONTS = {
-	NotoColorEmoji,
-	AppleEmoji: '-apple-system',
-	SegoeUI: 'Segoe UI Emoji',
-};
+import {FONTS, FONTS_ENUM} from '../utils';
 
 const schema = z.object({
 	text: zTextarea(),
-	fontName: z.enum(['NotoColorEmoji', 'AppleEmoji', 'SegoeUI'] as const),
+	fontName: FONTS_ENUM,
 	fontSize: z.number().step(0.01),
 });
 

@@ -9,6 +9,7 @@ import NoiseFilter from './noise-filter';
 import BackgroundDots from './background-dots';
 import BackgroundLine from './background-line';
 import BackgroundChecker from './background-checker';
+import {FONTS, FONTS_ENUM} from '../utils';
 
 import './style.css';
 
@@ -47,6 +48,15 @@ const schema = z.object({
 		x: z.number().default(0),
 		y: z.number().default(0),
 	}),
+	emoji: z.object({
+		text: zTextarea(),
+		fontName: FONTS_ENUM,
+		size: z.number().default(100),
+		x: z.number().default(0),
+		y: z.number().default(0),
+		flipX: z.boolean().default(false),
+		rotate: z.number().default(0),
+	}),
 });
 
 const Component: React.FC<z.infer<typeof schema>> = ({
@@ -55,6 +65,7 @@ const Component: React.FC<z.infer<typeof schema>> = ({
 	avatarSource,
 	title,
 	image,
+	emoji,
 }) => {
 	return (
 		<>
@@ -64,6 +75,21 @@ const Component: React.FC<z.infer<typeof schema>> = ({
 			<TitleLayer title={title} />
 			<AvatarLayer image={image} avatarSource={avatarSource} />
 			<LiveIndicator liveIndicator={liveIndicator} />
+			<AbsoluteFill>
+				<span
+					className="custom-stroke"
+					style={{
+						position: 'absolute',
+						left: '50%',
+						top: '50%',
+						fontFamily: FONTS[emoji.fontName],
+						fontSize: `${emoji.size}rem`,
+						transform: `translate(calc(-50% + ${emoji.x}px), calc(-50% + ${emoji.y}px)) scaleX(${emoji.flipX ? -1 : 1}) rotate(${emoji.rotate}deg)`,
+					}}
+				>
+					{emoji.text}
+				</span>
+			</AbsoluteFill>
 		</>
 	);
 };
@@ -83,7 +109,7 @@ export default () => (
 			liveIndicator: true,
 			avatarSource: 'speaking',
 			title: {
-				text: 'Mi título\naquí\n🎯',
+				text: 'Mi título\naquí',
 				lineHeight: TITLE_LINE_HEIGHT,
 				size: TITLE_SIZE,
 				x: TITLE_X,
@@ -93,6 +119,15 @@ export default () => (
 				size: IMAGE_SIZE,
 				x: IMAGE_X,
 				y: IMAGE_Y,
+			},
+			emoji: {
+				text: '😯',
+				fontName: 'NotoColorEmoji',
+				size: 32,
+				x: -632,
+				y: 0,
+				flipX: false,
+				rotate: 0,
 			},
 		}}
 	/>
