@@ -3,6 +3,7 @@ export default function BrickWall1({
 	height = 1080,
 	color = 'black',
 	background = '#ecc94b',
+	scale = 2,
 }) {
 	return (
 		<svg
@@ -16,7 +17,7 @@ export default function BrickWall1({
 					id="a"
 					width="30"
 					height="30"
-					patternTransform="scale(2)"
+					patternTransform={`scale(${scale})`}
 					patternUnits="userSpaceOnUse"
 				>
 					<rect width="100%" height="100%" fill={background} />

@@ -29,10 +29,7 @@ import DotBgOriginal from './compositions/dot-bg-original';
 import Thumbnail from './thumbnails/thumbnail';
 import Emoji from './emoji';
 
-import {
-	component as Background,
-	schema as BackgroundSchema,
-} from './compositions/background';
+import * as Background from './compositions/background';
 
 const folders = [
 	{...convencionesDeNombramiento},
@@ -94,18 +91,54 @@ export const RemotionRoot: React.FC = () => {
 			<Folder name="thumbnails">
 				<Thumbnail />
 				<Emoji />
+			</Folder>
+			<Folder name="backgrounds">
 				<Composition
-					id="background"
-					fps={FPS}
-					durationInFrames={DIF}
-					component={Background}
-					width={1920}
-					height={1080}
-					schema={BackgroundSchema}
+					id="cross-section"
+					{...Background}
 					defaultProps={{
+						name: 'cross-section' as const,
 						color: '#00000016',
 						background: '#ffffff',
-						direction: 'ltr' as const,
+						direction: 'rtl' as const,
+						scale: 4,
+						offset: 20,
+					}}
+				/>
+				<Composition
+					id="brick-wall-1"
+					{...Background}
+					defaultProps={{
+						name: 'cross-section' as const,
+						color: '#00000016',
+						background: '#ffffff',
+						direction: 'rtl' as const,
+						scale: 4,
+						offset: 20,
+					}}
+				/>
+				<Composition
+					id="circles-4"
+					{...Background}
+					defaultProps={{
+						name: 'circles-4' as const,
+						color: '#00000016',
+						background: '#ffffff',
+						direction: 'rtl' as const,
+						scale: 2,
+						offset: 40,
+					}}
+				/>
+				<Composition
+					id="scales-9"
+					{...Background}
+					defaultProps={{
+						name: 'scales-9' as const,
+						color: '#00000016',
+						background: '#ffffff',
+						direction: 'rtl' as const,
+						scale: 2,
+						offset: 34.116,
 					}}
 				/>
 			</Folder>

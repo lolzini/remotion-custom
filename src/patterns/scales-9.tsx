@@ -3,6 +3,7 @@ export default function Scales9({
 	height = 1080,
 	color = '#ecc94b',
 	background = '#2b2b31',
+	scale = 2,
 }) {
 	return (
 		<svg
@@ -16,7 +17,7 @@ export default function Scales9({
 					id="a"
 					width="34.116"
 					height="21"
-					patternTransform="scale(2)"
+					patternTransform={`scale(${scale})`}
 					patternUnits="userSpaceOnUse"
 				>
 					<rect width="100%" height="100%" fill={background} />

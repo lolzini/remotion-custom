@@ -1,43 +1,64 @@
 import {zColor} from '@remotion/zod-types';
 import {AbsoluteFill, interpolate, useCurrentFrame} from 'remotion';
 import {z} from 'zod';
-
 import {DIF} from '../../Root';
+
 import CrossSection from '../../patterns/cross-section';
+import BrickWall1 from '../../patterns/brick-wall-1';
+import Circles4 from '../../patterns/circles-4';
+import Scales9 from '../../patterns/scales-9';
+
+const fps = 30;
+const durationInFrames = fps;
+const width = 1920;
+const height = 1080;
 
 const schema = z.object({
+	name: z.enum(['cross-section', 'brick-wall-1', 'circles-4', 'scales-9']),
 	color: zColor(),
 	background: zColor(),
 	direction: z.enum(['ltr', 'rtl', 'ttb', 'btt']),
+	scale: z.number(),
+	offset: z.number(),
 });
 
-function Background({color, background, direction}: z.infer<typeof schema>) {
+function Component({
+	name,
+	color,
+	background,
+	direction,
+	scale,
+	offset,
+}: z.infer<typeof schema>) {
 	const frame = useCurrentFrame();
 
 	const getTransform = () => {
 		switch (direction) {
 			case 'ltr':
-				return `translateX(${interpolate(frame, [0, DIF], [-1920, 0])}px)`;
+				return `translateX(${interpolate(frame, [0, DIF], [-(offset * scale), 0])}px)`;
 			case 'rtl':
-				return `translateX(${interpolate(frame, [0, DIF], [0, -1920])}px)`;
+				return `translateX(${interpolate(frame, [0, DIF], [0, -(offset * scale)])}px)`;
 			case 'ttb':
-				return `translateY(${interpolate(frame, [0, DIF], [-1080 / 2, 0])}px)`;
+				return `translateY(${interpolate(frame, [0, DIF], [-(offset * scale), 0])}px)`;
 			case 'btt':
-				return `translateY(${interpolate(frame, [0, DIF], [0, -1080 / 2])}px)`;
+				return `translateY(${interpolate(frame, [0, DIF], [0, -(offset * scale)])}px)`;
 			default:
 				return `translateX(${interpolate(frame, [0, DIF], [0, 1920])}px)`;
 		}
 	};
 
+	const Render = Background({name});
+
 	return (
 		<AbsoluteFill>
 			<div style={{transform: getTransform()}}>
 				<div className="grid grid-cols-2">
-					<CrossSection
+					<Render
 						color={color}
 						background={background}
-						width={1920 * 4}
-						height={1080 * 4}
+						scale={scale}
+						width={1920 * 8}
+						height={1080 * 8}
 					/>
 				</div>
 			</div>
@@ -45,4 +66,19 @@ function Background({color, background, direction}: z.infer<typeof schema>) {
 	);
 }
 
-export {schema, Background as component};
+function Background({name}: {name: z.infer<typeof schema>['name']}) {
+	switch (name) {
+		case 'cross-section':
+			return CrossSection;
+		case 'brick-wall-1':
+			return BrickWall1;
+		case 'circles-4':
+			return Circles4;
+		case 'scales-9':
+			return Scales9;
+		default:
+			return CrossSection;
+	}
+}
+
+export {schema, Component as component, fps, durationInFrames, width, height};
