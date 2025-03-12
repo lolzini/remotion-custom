@@ -17,7 +17,6 @@ import PostIt from '../../components/post-it';
 import Shrink from '../../components/animations/shrink';
 import Rect from '../../components/rect';
 import Wrapper from '../../components/animations/wrapper';
-import AnimatedStep from '../../components/animations/animated-step';
 
 const {fontFamily} = loadFont();
 

@@ -10,14 +10,14 @@ export default {
 		),
 		() => {
 			return (
-				<div className="flex flex-col gap-4 mt-16">
+				<div className="mt-16 flex flex-col gap-4">
 					<p>
 						Existen diferentes <strong>notaciones</strong> para nombrar
 						entidades.
 					</p>
 					<p>Nos ayudan a mejorar la legibilidad de nuestro código.</p>
 
-					<ul className="list-disc ml-4 flex flex-col gap-4">
+					<ul className="ml-4 flex list-disc flex-col gap-4">
 						<li>
 							<C>snake_case</C>: Todo en minúscula, separando palabras con guion
 							bajo
@@ -51,11 +51,11 @@ export default {
 		},
 		() => {
 			return (
-				<div className="flex flex-col gap-4 mt-16">
+				<div className="mt-16 flex flex-col gap-4">
 					<table className="table border text-center">
 						<caption className="my-4">
 							Convenciones de nombramiento en{' '}
-							<span className="bg-[#F0DB4F] text-[#323330] font-bold px-2 py-1 rounded-full">
+							<span className="rounded-full bg-[#F0DB4F] px-2 py-1 font-bold text-[#323330]">
 								JavaScript
 							</span>
 						</caption>
@@ -119,11 +119,11 @@ export default {
 		},
 		() => {
 			return (
-				<div className="flex flex-col gap-4 mt-16">
+				<div className="mt-16 flex flex-col gap-4">
 					<table className="table border text-center">
 						<caption className="my-4">
 							Convenciones de nombramiento en{' '}
-							<span className="bg-[#306998] text-[#FFE873] font-bold px-2 py-1 rounded-full">
+							<span className="rounded-full bg-[#306998] px-2 py-1 font-bold text-[#FFE873]">
 								Python
 							</span>
 						</caption>
@@ -178,11 +178,11 @@ export default {
 		},
 		() => {
 			return (
-				<div className="flex flex-col gap-4 mt-16">
+				<div className="mt-16 flex flex-col gap-4">
 					<table className="table border text-center">
 						<caption className="my-4">
 							Convenciones de nombramiento en{' '}
-							<span className="bg-[#820C02] font-bold px-2 py-1 rounded-full">
+							<span className="rounded-full bg-[#820C02] px-2 py-1 font-bold">
 								Ruby
 							</span>
 						</caption>
@@ -241,7 +241,7 @@ export default {
 
 function C({children}) {
 	return (
-		<code className="font-bold font-mono bg-white/10 px-2 py-1 rounded-full">
+		<code className="rounded-full bg-white/10 px-2 py-1 font-mono font-bold">
 			{children}
 		</code>
 	);

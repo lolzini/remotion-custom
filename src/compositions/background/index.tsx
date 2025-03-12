@@ -1,7 +1,6 @@
-import {zColor} from '@remotion/zod-types';
 import {AbsoluteFill, interpolate, useCurrentFrame} from 'remotion';
 import {z} from 'zod';
-import {DIF} from '../../Root';
+import {zColor} from '@remotion/zod-types';
 
 import CrossSection from '../../patterns/cross-section';
 import BrickWall1 from '../../patterns/brick-wall-1';
@@ -35,15 +34,15 @@ function Component({
 	const getTransform = () => {
 		switch (direction) {
 			case 'ltr':
-				return `translateX(${interpolate(frame, [0, DIF], [-(offset * scale), 0])}px)`;
+				return `translateX(${interpolate(frame, [0, durationInFrames], [-(offset * scale), 0])}px)`;
 			case 'rtl':
-				return `translateX(${interpolate(frame, [0, DIF], [0, -(offset * scale)])}px)`;
+				return `translateX(${interpolate(frame, [0, durationInFrames], [0, -(offset * scale)])}px)`;
 			case 'ttb':
-				return `translateY(${interpolate(frame, [0, DIF], [-(offset * scale), 0])}px)`;
+				return `translateY(${interpolate(frame, [0, durationInFrames], [-(offset * scale), 0])}px)`;
 			case 'btt':
-				return `translateY(${interpolate(frame, [0, DIF], [0, -(offset * scale)])}px)`;
+				return `translateY(${interpolate(frame, [0, durationInFrames], [0, -(offset * scale)])}px)`;
 			default:
-				return `translateX(${interpolate(frame, [0, DIF], [0, 1920])}px)`;
+				return `translateX(${interpolate(frame, [0, durationInFrames], [0, 1920])}px)`;
 		}
 	};
 
