@@ -25,16 +25,18 @@ const IMAGE_SIZE = 200;
 const IMAGE_X = -640;
 const IMAGE_Y = 320;
 
-const AvatarSource = z.enum(['speaking', 'thinking']);
+const AvatarSource = z.enum(['speaking', 'thinking', 'mad']);
 
 const BackgroundType = z.enum(['dots', 'line', 'checker']);
+
+const LiveIndicatorState = z.enum(['off', 'live', 'replay']);
 
 const schema = z.object({
 	background: z.object({
 		pattern: BackgroundType.default('dots'),
 		noise: z.boolean().default(true),
 	}),
-	liveIndicator: z.boolean().default(true),
+	liveIndicator: LiveIndicatorState.default('live'),
 	avatarSource: AvatarSource.default('speaking'),
 	title: z.object({
 		text: zTextarea(),
@@ -106,7 +108,7 @@ export default () => (
 				pattern: 'dots',
 				noise: true,
 			},
-			liveIndicator: true,
+			liveIndicator: 'live',
 			avatarSource: 'speaking',
 			title: {
 				text: 'Mi título\naquí',
@@ -210,34 +212,44 @@ const AvatarLayer = ({
 	</AbsoluteFill>
 );
 
-const LiveIndicator = ({liveIndicator}: {liveIndicator: boolean}) => (
-	<AbsoluteFill>
-		<div
-			className={clsx(
-				'm-5 flex w-fit items-center gap-2 rounded-md px-4 py-1 text-9xl font-bold shadow-lg',
-				liveIndicator ? 'bg-red-600 text-white' : 'bg-neutral-600 text-white',
-			)}
-			style={{fontFamily: inter}}
-		>
-			{!liveIndicator && (
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="6rem"
-					height="6rem"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					className="lucide lucide-history"
-				>
-					<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-					<path d="M3 3v5h5" />
-					<path d="M12 7v5l4 2" />
-				</svg>
-			)}
-			<span>LIVE</span>
-		</div>
-	</AbsoluteFill>
-);
+const LiveIndicator = ({
+	liveIndicator,
+}: {
+	liveIndicator: z.infer<typeof LiveIndicatorState>;
+}) => {
+	if (liveIndicator === 'off') return null;
+
+	return (
+		<AbsoluteFill>
+			<div
+				className={clsx(
+					'm-5 flex w-fit items-center gap-2 rounded-md px-4 py-1 text-9xl font-bold shadow-lg',
+					liveIndicator === 'live'
+						? 'bg-red-600 text-white'
+						: 'bg-neutral-600 text-white',
+				)}
+				style={{fontFamily: inter}}
+			>
+				{liveIndicator === 'replay' && (
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="6rem"
+						height="6rem"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						className="lucide lucide-history"
+					>
+						<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+						<path d="M3 3v5h5" />
+						<path d="M12 7v5l4 2" />
+					</svg>
+				)}
+				<span>LIVE</span>
+			</div>
+		</AbsoluteFill>
+	);
+};
