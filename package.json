@@ -39,7 +39,7 @@
 		"typescript": "5.4.5"
 	},
 	"scripts": {
-		"start": "remotion studio --no-open",
+		"dev": "remotion studio --no-open",
 		"build": "remotion render MyComp out/video.mp4",
 		"upgrade": "remotion upgrade",
 		"test": "eslint src --ext ts,tsx,js,jsx && tsc"
