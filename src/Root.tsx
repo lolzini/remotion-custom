@@ -1,4 +1,4 @@
-import {Folder} from 'remotion';
+import {Folder, Still} from 'remotion';
 
 import StreamSchedule from './stills/stream-schedule-v1';
 import DuolingoClub from './stills/duolingo-club';
@@ -12,6 +12,7 @@ import Goals2025 from './stills/goals-2025';
 import DotBgOriginal from './compositions/dot-bg-original';
 import Thumbnail from './thumbnails/thumbnail';
 import Emoji from './emoji';
+import * as Diploma from './stills/diploma';
 
 import './style.css';
 
@@ -33,6 +34,18 @@ export const RemotionRoot: React.FC = () => {
 				<StreamSchedule />
 				<Goals2025 />
 				<DuolingoClub />
+				<Still
+					id="diploma"
+					{...Diploma}
+					defaultProps={{
+						background: '#f8f4f0',
+						color: '#f2eeeb',
+						title: 'Diploma de Honor',
+						name: 'Lolzini',
+						content: 'Por ser parte de la comunidad de lolzini',
+						details: '2025',
+					}}
+				/>
 			</Folder>
 
 			<Folder name="thumbnails">
