@@ -24,6 +24,7 @@
 		"moment-timezone": "^0.5.45",
 		"react": "^18.0.0",
 		"react-dom": "^18.0.0",
+		"react-icons": "^5.5.0",
 		"react-syntax-highlighter": "^15.5.0",
 		"remotion": "4.0.244",
 		"zod": "3.22.3"

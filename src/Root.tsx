@@ -1,4 +1,6 @@
-import {Folder} from 'remotion';
+import {AbsoluteFill, Composition, Folder, Still} from 'remotion';
+
+import * as Socials from './compositions/socials/index';
 
 import StreamSchedule from './stills/stream-schedule-v1';
 import DuolingoClub from './stills/duolingo-club';
@@ -14,6 +16,7 @@ import Thumbnail from './thumbnails/thumbnail';
 import Emoji from './emoji';
 
 import './style.css';
+import {FaTiktok, FaTwitch, FaYoutube} from 'react-icons/fa';
 
 export const RemotionRoot: React.FC = () => {
 	return (
@@ -22,6 +25,23 @@ export const RemotionRoot: React.FC = () => {
 				<CoverTwitch />
 				<CoverX />
 				<CoverYouTube />
+			</Folder>
+			<Folder name="socials">
+				<Composition id="socials" {...Socials} />
+				<Still
+					id="logo"
+					component={() => {
+						return (
+							<AbsoluteFill className="items-center justify-center">
+								{/* <FaYoutube className="text-[12rem] text-[#ff0000]" /> */}
+								<FaTiktok className="text-[12rem] text-[#000000]" />
+								{/* <FaTwitch className="text-[12rem] text-[#6441a5]" /> */}
+							</AbsoluteFill>
+						);
+					}}
+					width={200}
+					height={200}
+				/>
 			</Folder>
 			<Folder name="backgrounds">
 				<LineBg />

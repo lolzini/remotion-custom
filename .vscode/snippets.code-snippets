@@ -1,0 +1,27 @@
+{
+	"Remotion Social Composition": {
+		"prefix": "compo",
+		"body": [
+			"import {AbsoluteFill} from 'remotion';",
+			"import {z} from 'zod';",
+			"",
+			"const width = 600;",
+			"const height = 400;",
+			"const fps = 60;",
+			"const durationInFrames = fps * 60;",
+			"",
+			"const schema = z.object({});",
+			"",
+			"function ${1:Component}({}) {",
+			"\treturn (",
+			"\t\t<AbsoluteFill className=\"items-center justify-center\">",
+			"\t\t\t{/* ${2:Content} */}",
+			"\t\t</AbsoluteFill>",
+			"\t);",
+			"}",
+			"",
+			"export {${1:Component} as component, schema, fps, durationInFrames, width, height};",
+		],
+		"description": "Creates a basic Remotion social media composition component",
+	},
+}

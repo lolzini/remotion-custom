@@ -1,0 +1,34 @@
+.socials_custom-stroke {
+	--stroke-color: white;
+	--stroke-width: 0.016em;
+	--shadow-blur: 0.001em;
+	filter: 
+		/* Cardinal directions */ drop-shadow(
+			0 var(--stroke-width) var(--stroke-color)
+		)
+		/* Down */ drop-shadow(0 calc(var(--stroke-width) * -1) var(--stroke-color))
+		/* Up */ drop-shadow(var(--stroke-width) 0 var(--stroke-color)) /* Right */
+		drop-shadow(calc(var(--stroke-width) * -1) 0 var(--stroke-color)) /* Left */
+		/* Diagonal directions */
+		drop-shadow(
+			calc(var(--stroke-width) * 0.7) calc(var(--stroke-width) * 0.7)
+				var(--stroke-color)
+		)
+		/* Down-Right */
+		drop-shadow(
+			calc(var(--stroke-width) * -0.7) calc(var(--stroke-width) * 0.7)
+				var(--stroke-color)
+		)
+		/* Down-Left */
+		drop-shadow(
+			calc(var(--stroke-width) * 0.7) calc(var(--stroke-width) * -0.7)
+				var(--stroke-color)
+		)
+		/* Up-Right */
+		drop-shadow(
+			calc(var(--stroke-width) * -0.7) calc(var(--stroke-width) * -0.7)
+				var(--stroke-color)
+		)
+		/* Up-Left */ /* Final shadow */
+		drop-shadow(0.2rem 0.2rem var(--shadow-blur) rgba(0, 0, 0, 0.3));
+}
