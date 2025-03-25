@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import {AbsoluteFill, Img, staticFile, Still} from 'remotion';
-import {loadFont} from '@remotion/google-fonts/CaveatBrush';
-import {loadFont as loadInter} from '@remotion/google-fonts/Inter';
 import {z} from 'zod';
 import {zTextarea} from '@remotion/zod-types';
+import {loadFont} from '@remotion/google-fonts/CaveatBrush';
+import {loadFont as loadInter} from '@remotion/google-fonts/Inter';
 
 import NoiseFilter from './noise-filter';
 import BackgroundDots from './background-dots';
@@ -27,7 +27,7 @@ const IMAGE_Y = 320;
 
 const AvatarSource = z.enum(['speaking', 'thinking', 'mad']);
 
-const BackgroundType = z.enum(['dots', 'line', 'checker']);
+const BackgroundType = z.enum(['transparent', 'dots', 'line', 'checker']);
 
 const LiveIndicatorState = z.enum(['off', 'live', 'replay']);
 
@@ -71,27 +71,17 @@ const Component: React.FC<z.infer<typeof schema>> = ({
 }) => {
 	return (
 		<>
-			<GradientBackground />
-			<PatternBackground background={background.pattern} />
-			<NoiseLayer noise={background.noise} />
+			{background.pattern !== 'transparent' ? (
+				<>
+					<GradientBackground />
+					<PatternBackground background={background.pattern} />
+					<NoiseLayer noise={background.noise} />
+				</>
+			) : null}
 			<TitleLayer title={title} />
 			<AvatarLayer image={image} avatarSource={avatarSource} />
 			<LiveIndicator liveIndicator={liveIndicator} />
-			<AbsoluteFill>
-				<span
-					className="custom-stroke"
-					style={{
-						position: 'absolute',
-						left: '50%',
-						top: '50%',
-						fontFamily: FONTS[emoji.fontName],
-						fontSize: `${emoji.size}rem`,
-						transform: `translate(calc(-50% + ${emoji.x}px), calc(-50% + ${emoji.y}px)) scaleX(${emoji.flipX ? -1 : 1}) rotate(${emoji.rotate}deg)`,
-					}}
-				>
-					{emoji.text}
-				</span>
-			</AbsoluteFill>
+			<EmojiLayer emoji={emoji} />
 		</>
 	);
 };
@@ -136,6 +126,7 @@ export default () => (
 );
 
 const BACKGROUNDS = {
+	transparent: () => <div />,
 	dots: BackgroundDots,
 	line: BackgroundLine,
 	checker: BackgroundChecker,
@@ -253,3 +244,21 @@ const LiveIndicator = ({
 		</AbsoluteFill>
 	);
 };
+
+const EmojiLayer = ({emoji}: {emoji: z.infer<typeof schema>['emoji']}) => (
+	<AbsoluteFill>
+		<span
+			className="custom-stroke"
+			style={{
+				position: 'absolute',
+				left: '50%',
+				top: '50%',
+				fontFamily: FONTS[emoji.fontName],
+				fontSize: `${emoji.size}rem`,
+				transform: `translate(calc(-50% + ${emoji.x}px), calc(-50% + ${emoji.y}px)) scaleX(${emoji.flipX ? -1 : 1}) rotate(${emoji.rotate}deg)`,
+			}}
+		>
+			{emoji.text}
+		</span>
+	</AbsoluteFill>
+);
