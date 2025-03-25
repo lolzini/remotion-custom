@@ -1,6 +1,4 @@
-import {AbsoluteFill, Composition, Folder, Still} from 'remotion';
-
-import * as Socials from './compositions/socials/index';
+import {Folder, Still} from 'remotion';
 
 import StreamSchedule from './stills/stream-schedule-v1';
 import DuolingoClub from './stills/duolingo-club';
@@ -14,9 +12,10 @@ import Goals2025 from './stills/goals-2025';
 import DotBgOriginal from './compositions/dot-bg-original';
 import Thumbnail from './thumbnails/thumbnail';
 import Emoji from './emoji';
+import * as Diploma from './stills/diploma';
 
 import './style.css';
-import {FaTiktok, FaTwitch, FaYoutube} from 'react-icons/fa';
+import EnglishVocabulary from './stills/english-vocabulary';
 
 export const RemotionRoot: React.FC = () => {
 	return (
@@ -25,23 +24,6 @@ export const RemotionRoot: React.FC = () => {
 				<CoverTwitch />
 				<CoverX />
 				<CoverYouTube />
-			</Folder>
-			<Folder name="socials">
-				<Composition id="socials" {...Socials} />
-				<Still
-					id="logo"
-					component={() => {
-						return (
-							<AbsoluteFill className="items-center justify-center">
-								{/* <FaYoutube className="text-[12rem] text-[#ff0000]" /> */}
-								<FaTiktok className="text-[12rem] text-[#000000]" />
-								{/* <FaTwitch className="text-[12rem] text-[#6441a5]" /> */}
-							</AbsoluteFill>
-						);
-					}}
-					width={200}
-					height={200}
-				/>
 			</Folder>
 			<Folder name="backgrounds">
 				<LineBg />
@@ -53,11 +35,24 @@ export const RemotionRoot: React.FC = () => {
 				<StreamSchedule />
 				<Goals2025 />
 				<DuolingoClub />
+				<Still
+					id="diploma"
+					{...Diploma}
+					defaultProps={{
+						background: '#f8f4f0',
+						color: '#f2eeeb',
+						title: 'Diploma de Honor',
+						name: 'Lolzini',
+						content: 'Por ser parte de la comunidad de lolzini',
+						details: '2025',
+					}}
+				/>
 			</Folder>
 
-			<Folder name="thumbnails">
+			<Folder name="generators">
 				<Thumbnail />
 				<Emoji />
+				<EnglishVocabulary />
 			</Folder>
 		</>
 	);
