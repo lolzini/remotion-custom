@@ -19,6 +19,7 @@
 		"@remotion/cli": "4.0.244",
 		"@remotion/fonts": "^4.0.273",
 		"@remotion/google-fonts": "4.0.244",
+		"@remotion/renderer": "4.0.279",
 		"@remotion/zod-types": "4.0.244",
 		"clsx": "^2.1.1",
 		"moment-timezone": "^0.5.45",
