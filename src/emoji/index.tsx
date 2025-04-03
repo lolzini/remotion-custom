@@ -30,44 +30,46 @@ const Component: React.FC<z.infer<typeof schema>> = ({
 					xmlns="http://www.w3.org/2000/svg"
 				>
 					<defs>
-						<filter id="outline">
-							<feMorphology
-								in="SourceAlpha"
-								operator="dilate"
-								radius={strokeWidth}
-								result="dilated1"
-							/>
-							<feMorphology
-								in="dilated1"
-								operator="erode"
-								radius={strokeWidth * 0.15}
-								result="smoothed"
-							/>
-							<feFlood floodColor="#fff" result="white" />
-							<feComposite
-								in="white"
-								in2="smoothed"
-								operator="in"
-								result="outline"
-							/>
-							{shadow && (
-								<>
-									<feOffset in="dilated" dx="4" dy="4" result="offset" />
-									<feFlood floodColor="rgba(0, 0, 0, 0.3)" result="shadow" />
-									<feComposite
-										in="shadow"
-										in2="offset"
-										operator="in"
-										result="shadow-fill"
-									/>
-								</>
-							)}
-							<feMerge>
-								{shadow && <feMergeNode in="shadow-fill" />}
-								<feMergeNode in="outline" />
-								<feMergeNode in="SourceGraphic" />
-							</feMerge>
-						</filter>
+						{strokeWidth > 0 && (
+							<filter id="outline">
+								<feMorphology
+									in="SourceAlpha"
+									operator="dilate"
+									radius={strokeWidth}
+									result="dilated1"
+								/>
+								<feMorphology
+									in="dilated1"
+									operator="erode"
+									radius={strokeWidth * 0.15}
+									result="smoothed"
+								/>
+								<feFlood floodColor="#fff" result="white" />
+								<feComposite
+									in="white"
+									in2="smoothed"
+									operator="in"
+									result="outline"
+								/>
+								{shadow && (
+									<>
+										<feOffset in="dilated" dx="4" dy="4" result="offset" />
+										<feFlood floodColor="rgba(0, 0, 0, 0.3)" result="shadow" />
+										<feComposite
+											in="shadow"
+											in2="offset"
+											operator="in"
+											result="shadow-fill"
+										/>
+									</>
+								)}
+								<feMerge>
+									{shadow && <feMergeNode in="shadow-fill" />}
+									<feMergeNode in="outline" />
+									<feMergeNode in="SourceGraphic" />
+								</feMerge>
+							</filter>
+						)}
 					</defs>
 					<text
 						x="50%"
@@ -76,7 +78,7 @@ const Component: React.FC<z.infer<typeof schema>> = ({
 						dominantBaseline="middle"
 						style={{fontFamily, fontSize: `${fontSize}em`}}
 						fill="currentColor"
-						filter="url(#outline)"
+						filter={strokeWidth > 0 ? 'url(#outline)' : undefined}
 					>
 						{text}
 					</text>
