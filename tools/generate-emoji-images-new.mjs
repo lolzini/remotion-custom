@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import {bundle} from '@remotion/bundler';
 import {renderStill} from '@remotion/renderer';
-import {webpackOverride} from '../src/webpack-override.js';
+import {webpackOverride} from './webpack-override.mjs';
 
 const emojis = JSON.parse(fs.readFileSync('./tools/emojis.json', 'utf-8'));
 
@@ -10,22 +10,33 @@ async function renderEmoji(emoji) {
 	const fileName = `${emoji}_${emojiCode}`;
 	const outputPath = `./out/emojis/${fileName}.png`;
 
+	const props = {
+		text: emoji,
+		fontName: 'NotoColorEmoji',
+		fontSize: 36,
+		shadow: true,
+		strokeWidth: 8,
+	};
+
 	const bundled = await bundle({
-		entryPoint: './src/emoji/index.tsx',
+		entryPoint: 'src/index.ts',
 		webpackOverride,
 	});
 
 	await renderStill({
-		composition: 'emoji',
+		composition: {
+			id: 'emoji',
+			width: 800,
+			height: 800,
+			fps: 1,
+			durationInFrames: 1,
+			props,
+		},
 		serveUrl: bundled,
 		output: outputPath,
-		inputProps: {
-			text: emoji,
-			fontName: 'NotoColorEmoji',
-			fontSize: 36,
-			shadow: true,
-		},
+		inputProps: props,
 		imageFormat: 'png',
+		chromiumOptions: {gl: 'angle'},
 	});
 }
 
