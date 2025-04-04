@@ -42,6 +42,7 @@
 	},
 	"scripts": {
 		"dev": "remotion studio --no-open",
+		"dev:t": "remotion studio --no-open --config=stinger.config.ts",
 		"build": "remotion render MyComp out/video.mp4",
 		"upgrade": "remotion upgrade",
 		"test": "eslint src --ext ts,tsx,js,jsx && tsc"
