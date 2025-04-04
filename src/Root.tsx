@@ -17,6 +17,7 @@ import * as Diploma from './stills/diploma';
 import './style.css';
 import EnglishVocabulary from './stills/english-vocabulary';
 import EmojiStinger from './compositions/emoji-stinger';
+import OldTvStatic from './compositions/old-tv-static';
 
 export const RemotionRoot: React.FC = () => {
 	return (
@@ -57,6 +58,7 @@ export const RemotionRoot: React.FC = () => {
 			</Folder>
 			<Folder name="stingers">
 				<EmojiStinger />
+				<OldTvStatic />
 			</Folder>
 		</>
 	);
