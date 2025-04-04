@@ -16,6 +16,7 @@ import * as Diploma from './stills/diploma';
 
 import './style.css';
 import EnglishVocabulary from './stills/english-vocabulary';
+import EmojiStinger from './compositions/emoji-stinger';
 
 export const RemotionRoot: React.FC = () => {
 	return (
@@ -53,6 +54,9 @@ export const RemotionRoot: React.FC = () => {
 				<Thumbnail />
 				<Emoji />
 				<EnglishVocabulary />
+			</Folder>
+			<Folder name="stingers">
+				<EmojiStinger />
 			</Folder>
 		</>
 	);

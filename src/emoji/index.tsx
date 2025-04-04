@@ -71,17 +71,20 @@ const Component: React.FC<z.infer<typeof schema>> = ({
 							</filter>
 						)}
 					</defs>
-					<text
-						x="50%"
-						y="50%"
-						textAnchor="middle"
-						dominantBaseline="middle"
-						style={{fontFamily, fontSize: `${fontSize}em`}}
-						fill="currentColor"
-						filter={strokeWidth > 0 ? 'url(#outline)' : undefined}
-					>
-						{text}
-					</text>
+					<foreignObject width="100%" height="100%">
+						<div className="flex h-full w-full items-center justify-center">
+							<div
+								style={{
+									fontFamily,
+									fontSize: `${fontSize}em`,
+									filter: strokeWidth > 0 ? 'url(#outline)' : undefined,
+									color: 'currentColor',
+								}}
+							>
+								{text}
+							</div>
+						</div>
+					</foreignObject>
 				</svg>
 			</AbsoluteFill>
 		</>

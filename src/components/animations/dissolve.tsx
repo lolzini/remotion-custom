@@ -1,4 +1,4 @@
-import {spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {Easing, interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 
 export default function Dissolve({
 	children,
@@ -7,24 +7,23 @@ export default function Dissolve({
 	toOpacity = 1,
 	durationInFrames = 30,
 	reverse = false,
+	delay = 0,
 }) {
 	const frame = useCurrentFrame();
-	const {fps} = useVideoConfig();
 
 	const startOpacity = reverse ? toOpacity : fromOpacity;
 	const endOpacity = reverse ? fromOpacity : toOpacity;
 
-	const opacity = spring({
-		frame,
-		fps,
-		config: {
-			damping: 20,
-			stiffness: 100,
+	const opacity = interpolate(
+		Math.max(0, frame - delay),
+		[0, durationInFrames],
+		[startOpacity, endOpacity],
+		{
+			extrapolateLeft: 'clamp',
+			extrapolateRight: 'clamp',
+			easing: Easing.elastic(),
 		},
-		durationInFrames,
-		from: startOpacity,
-		to: endOpacity,
-	});
+	);
 
 	return (
 		<div

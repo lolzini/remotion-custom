@@ -1,38 +1,43 @@
-import {spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {Easing, interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
 
 export default function Shrink({
 	children,
 	fromScale = 2,
 	toScale = 1,
 	durationInFrames = 30,
-	reverse = false, // Add reverse prop
+	delay = 0,
+	reverse = false,
+	transformOrigin = '100% 100%',
+	transformX = 0,
+	transformY = 0,
 }) {
 	const frame = useCurrentFrame();
-	const {fps} = useVideoConfig();
+
+	// Only start the animation after the delay
+	const adjustedFrame = Math.max(0, frame - delay);
 
 	// Determine the from and to values based on reverse prop
 	const [startScale, endScale] = reverse
 		? [toScale, fromScale]
 		: [fromScale, toScale];
 
-	const scale = spring({
-		frame,
-		fps,
-		config: {
-			damping: 20,
-			stiffness: 100,
+	const scale = interpolate(
+		adjustedFrame,
+		[0, durationInFrames],
+		[startScale, endScale],
+		{
+			extrapolateLeft: 'clamp',
+			extrapolateRight: 'clamp',
+			easing: Easing.elastic(),
 		},
-		durationInFrames,
-		from: startScale,
-		to: endScale,
-	});
+	);
 
 	return (
 		<div
 			className="h-fit w-fit"
 			style={{
-				transformOrigin: '50% 50%',
-				transform: `scale(${scale})`,
+				transformOrigin,
+				transform: `scale(${scale}) translate(${transformX}px, ${transformY}px)`,
 			}}
 		>
 			{children}
