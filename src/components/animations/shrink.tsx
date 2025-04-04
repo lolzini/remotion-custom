@@ -1,4 +1,4 @@
-import {Easing, interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
+import {Easing, interpolate, useCurrentFrame} from 'remotion';
 
 export default function Shrink({
 	children,
