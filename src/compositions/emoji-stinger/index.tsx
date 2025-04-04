@@ -3,7 +3,6 @@ import {
 	Composition,
 	Img,
 	random,
-	Sequence,
 	Series,
 	staticFile,
 } from 'remotion';
@@ -16,6 +15,9 @@ const DIF = FPS * 2;
 
 const schema = z.object({
 	emojiSeed: z.number(),
+	positionSeed: z.number(),
+	rotationSeed: z.number(),
+	zIndexSeed: z.number(),
 });
 
 const friendlyEmojis = [
@@ -126,143 +128,33 @@ const friendlyEmojis = [
 	'🫸_1FAF8',
 ];
 
-export const Component = ({emojiSeed}: z.infer<typeof schema>) => {
+export const Component = ({
+	emojiSeed,
+	positionSeed,
+	rotationSeed,
+	zIndexSeed,
+}: z.infer<typeof schema>) => {
 	return (
 		<AbsoluteFill>
 			<Series>
 				<Series.Sequence durationInFrames={30} layout="none">
-					<div className="-m-40 flex flex-wrap">
-						{Array(144)
-							.fill(null)
-							.map((_, i) => {
-								const {x, y} = getRandomPosition({
-									seed: `${i}-position`,
-									xMin: 30,
-									xMax: 90,
-									yMin: 30,
-									yMax: 90,
-								});
-								const size = getRandomSize({seed: i});
-								const emoji = getRandomEmoji({seed: i * emojiSeed});
-								const delay = getRandomNumber({
-									seed: `${i}-delay`,
-									min: 0,
-									max: 15,
-								});
-
-								const transformX = getRandomNumber({
-									seed: `${i}-transformX`,
-									min: -100,
-									max: 100,
-								});
-
-								const transformY = getRandomNumber({
-									seed: `${i}-transformY`,
-									min: -600,
-									max: 600,
-								});
-								return (
-									<div
-										key={i}
-										className="relative size-[120px]"
-										style={{zIndex: Math.floor(random(i + 'z') * 100)}}
-									>
-										<Dissolve delay={delay} durationInFrames={15}>
-											<Shrink
-												delay={delay}
-												transformX={transformX}
-												transformY={transformY}
-												durationInFrames={15}
-											>
-												<Img
-													style={{
-														position: 'absolute',
-														objectFit: 'contain',
-														left: x,
-														top: y,
-														width: `${size}px`,
-														height: `${size}px`,
-														maxWidth: 'unset',
-														maxHeight: 'unset',
-
-														transform: `rotate(${getRandomRotation({seed: i})}deg)`,
-													}}
-													src={staticFile(`/emojis/${emoji}.png`)}
-												/>
-											</Shrink>
-										</Dissolve>
-									</div>
-								);
-							})}
-					</div>
+					<EmojiGrid
+						emojiSeed={emojiSeed}
+						positionSeed={positionSeed}
+						rotationSeed={rotationSeed}
+						zIndexSeed={zIndexSeed}
+					/>
 				</Series.Sequence>
 				<Series.Sequence durationInFrames={30} layout="none">
-					<div className="-m-40 flex flex-wrap">
-						{Array(144)
-							.fill(null)
-							.map((_, i) => {
-								const {x, y} = getRandomPosition({
-									seed: `${i}-position`,
-									xMin: 30,
-									xMax: 90,
-									yMin: 30,
-									yMax: 90,
-								});
-								const size = getRandomSize({seed: i});
-								const emoji = getRandomEmoji({seed: i * emojiSeed});
-								const delay = getRandomNumber({
-									seed: `${i}-delay`,
-									min: 0,
-									max: 15,
-								});
-
-								const transformX = getRandomNumber({
-									seed: `${i}-transformX`,
-									min: -100,
-									max: 100,
-								});
-
-								const transformY = getRandomNumber({
-									seed: `${i}-transformY`,
-									min: -600,
-									max: 600,
-								});
-								return (
-									<div
-										key={i}
-										className="relative size-[120px]"
-										style={{zIndex: Math.floor(random(i + 'z') * 100)}}
-									>
-										<Dissolve reverse delay={delay} durationInFrames={15}>
-											<Shrink
-												delay={delay}
-												fromScale={1}
-												toScale={2}
-												transformX={transformX}
-												transformY={transformY}
-												durationInFrames={15}
-											>
-												<Img
-													style={{
-														position: 'absolute',
-														objectFit: 'contain',
-														left: x,
-														top: y,
-														width: `${size}px`,
-														height: `${size}px`,
-														maxWidth: 'unset',
-														maxHeight: 'unset',
-
-														transform: `rotate(${getRandomRotation({seed: i})}deg)`,
-													}}
-													src={staticFile(`/emojis/${emoji}.png`)}
-												/>
-											</Shrink>
-										</Dissolve>
-									</div>
-								);
-							})}
-					</div>
+					<EmojiGrid
+						emojiSeed={emojiSeed}
+						positionSeed={positionSeed}
+						rotationSeed={rotationSeed}
+						zIndexSeed={zIndexSeed}
+						reverse
+						fromScale={1}
+						toScale={2}
+					/>
 				</Series.Sequence>
 			</Series>
 		</AbsoluteFill>
@@ -279,12 +171,103 @@ export default function () {
 			fps={30}
 			durationInFrames={DIF}
 			schema={schema}
-			defaultProps={{emojiSeed: 233637739}}
+			defaultProps={{
+				emojiSeed: 233637739,
+				positionSeed: 86,
+				rotationSeed: 77,
+				zIndexSeed: 171717256942017,
+			}}
 		/>
 	);
 }
 
 // HELPERS ------------
+
+const exceptions: number[] = [100, 8, 101, 98, 87, 78, 114, 136, 109];
+
+const EmojiGrid = ({
+	emojiSeed,
+	positionSeed,
+	rotationSeed,
+	zIndexSeed,
+	reverse = false,
+	fromScale = 0,
+	toScale = 1,
+}: z.infer<typeof schema> & {
+	reverse?: boolean;
+	fromScale?: number;
+	toScale?: number;
+}) => (
+	<div className="-m-40 flex flex-wrap">
+		{Array(144)
+			.fill(null)
+			.map((_, i) => {
+				const {x, y} = getRandomPosition({
+					seed: `${i * positionSeed}-position`,
+					xMin: -120,
+					xMax: 120,
+					yMin: -120,
+					yMax: 120,
+				});
+				const size = getRandomSize({seed: i});
+				const emoji = getRandomEmoji({seed: i * emojiSeed});
+				const delay = getRandomNumber({
+					seed: `${i}-delay`,
+					min: 0,
+					max: 15,
+				});
+
+				const transformX = getRandomNumber({
+					seed: `${i}-transformX`,
+					min: -100,
+					max: 100,
+				});
+
+				const transformY = getRandomNumber({
+					seed: `${i}-transformY`,
+					min: -600,
+					max: 600,
+				});
+
+				if (exceptions.includes(i)) return <div className="size-[120px]" />;
+
+				return (
+					<div
+						key={i}
+						className="relative size-[120px]"
+						style={{zIndex: Math.floor(random(i * zIndexSeed + 'z') * 100)}}
+					>
+						<Dissolve reverse={reverse} delay={delay} durationInFrames={15}>
+							<Shrink
+								delay={delay}
+								fromScale={fromScale}
+								toScale={toScale}
+								transformX={transformX}
+								transformY={transformY}
+								durationInFrames={15}
+							>
+								<Img
+									style={{
+										position: 'absolute',
+										objectFit: 'contain',
+										left: x,
+										top: y,
+										width: `${size}px`,
+										height: `${size}px`,
+										maxWidth: 'unset',
+										maxHeight: 'unset',
+										transform: `rotate(${getRandomRotation({seed: `${i * rotationSeed}`})}deg)`,
+									}}
+									src={staticFile(`/emojis/${emoji}.png`)}
+									data-id={i}
+								/>
+							</Shrink>
+						</Dissolve>
+					</div>
+				);
+			})}
+	</div>
+);
 
 const getRandomNumber = ({
 	seed,
