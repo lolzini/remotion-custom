@@ -8,8 +8,9 @@
 import {Config} from '@remotion/cli/config';
 import {webpackOverride} from './src/webpack-override';
 
-Config.setVideoImageFormat('jpeg');
 Config.setOverwriteOutput(true);
+Config.setVideoImageFormat('jpeg');
+Config.setJpegQuality(100);
+Config.setHardwareAcceleration('if-possible');
 Config.setChromiumOpenGlRenderer('angle');
-
 Config.overrideWebpackConfig(webpackOverride);
