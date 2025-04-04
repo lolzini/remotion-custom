@@ -1,8 +1,10 @@
 import {
 	AbsoluteFill,
+	Audio,
 	Composition,
 	Img,
 	random,
+	Sequence,
 	Series,
 	staticFile,
 } from 'remotion';
@@ -18,6 +20,7 @@ const schema = z.object({
 	positionSeed: z.number(),
 	rotationSeed: z.number(),
 	zIndexSeed: z.number(),
+	sizeSeed: z.number(),
 });
 
 const friendlyEmojis = [
@@ -133,31 +136,69 @@ export const Component = ({
 	positionSeed,
 	rotationSeed,
 	zIndexSeed,
+	sizeSeed,
 }: z.infer<typeof schema>) => {
 	return (
-		<AbsoluteFill>
-			<Series>
-				<Series.Sequence durationInFrames={30} layout="none">
-					<EmojiGrid
-						emojiSeed={emojiSeed}
-						positionSeed={positionSeed}
-						rotationSeed={rotationSeed}
-						zIndexSeed={zIndexSeed}
-					/>
-				</Series.Sequence>
-				<Series.Sequence durationInFrames={30} layout="none">
-					<EmojiGrid
-						emojiSeed={emojiSeed}
-						positionSeed={positionSeed}
-						rotationSeed={rotationSeed}
-						zIndexSeed={zIndexSeed}
-						reverse
-						fromScale={1}
-						toScale={2}
-					/>
-				</Series.Sequence>
-			</Series>
-		</AbsoluteFill>
+		<>
+			{Array(9)
+				.fill(null)
+				.map((_, i) => {
+					const randomPopNumber = getRandomNumber({
+						seed: `${i}-intro`,
+						min: 1,
+						max: 6,
+					});
+					return (
+						<Sequence from={5 + 2 * i}>
+							<Audio
+								src={staticFile(`audio/sfx_mouth-pop-0${randomPopNumber}.wav`)}
+							/>
+						</Sequence>
+					);
+				})}
+			{Array(9)
+				.fill(null)
+				.map((_, i) => {
+					const randomPopNumber = getRandomNumber({
+						seed: `${i}-outro`,
+						min: 1,
+						max: 6,
+					});
+					return (
+						<Sequence from={30 + 2 * i}>
+							<Audio
+								toneFrequency={0.5}
+								src={staticFile(`audio/sfx_mouth-pop-0${randomPopNumber}.wav`)}
+							/>
+						</Sequence>
+					);
+				})}
+			<AbsoluteFill>
+				<Series>
+					<Series.Sequence durationInFrames={30} layout="none">
+						<EmojiGrid
+							emojiSeed={emojiSeed}
+							positionSeed={positionSeed}
+							rotationSeed={rotationSeed}
+							zIndexSeed={zIndexSeed}
+							sizeSeed={sizeSeed}
+						/>
+					</Series.Sequence>
+					<Series.Sequence durationInFrames={30} layout="none">
+						<EmojiGrid
+							emojiSeed={emojiSeed}
+							positionSeed={positionSeed}
+							rotationSeed={rotationSeed}
+							zIndexSeed={zIndexSeed}
+							sizeSeed={sizeSeed}
+							reverse
+							fromScale={1}
+							toScale={4}
+						/>
+					</Series.Sequence>
+				</Series>
+			</AbsoluteFill>
+		</>
 	);
 };
 
@@ -176,6 +217,7 @@ export default function () {
 				positionSeed: 86,
 				rotationSeed: 77,
 				zIndexSeed: 171717256942017,
+				sizeSeed: 0,
 			}}
 		/>
 	);
@@ -190,6 +232,7 @@ const EmojiGrid = ({
 	positionSeed,
 	rotationSeed,
 	zIndexSeed,
+	sizeSeed,
 	reverse = false,
 	fromScale = 0,
 	toScale = 1,
@@ -209,7 +252,7 @@ const EmojiGrid = ({
 					yMin: -120,
 					yMax: 120,
 				});
-				const size = getRandomSize({seed: i});
+				const size = getRandomSize({seed: i * sizeSeed});
 				const emoji = getRandomEmoji({seed: i * emojiSeed});
 				const delay = getRandomNumber({
 					seed: `${i}-delay`,
