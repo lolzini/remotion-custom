@@ -103,7 +103,7 @@ export default () => (
 			fontName: 'NotoColorEmoji' as const,
 			fontSize: 36,
 			shadow: true,
-			strokeWidth: 8,
+			strokeWidth: 16,
 		}}
 	/>
 );
