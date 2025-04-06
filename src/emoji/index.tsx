@@ -3,6 +3,7 @@ import {z} from 'zod';
 import {zTextarea} from '@remotion/zod-types';
 
 import {FONTS, FONTS_ENUM} from '../utils';
+import {SVGOutline} from '../components/svg-outline';
 
 const schema = z.object({
 	text: zTextarea(),
@@ -23,69 +24,17 @@ const Component: React.FC<z.infer<typeof schema>> = ({
 	return (
 		<>
 			<AbsoluteFill className="items-center justify-center">
-				<svg
-					width="100%"
-					height="100%"
-					viewBox="0 0 800 800"
-					xmlns="http://www.w3.org/2000/svg"
-				>
-					<defs>
-						{strokeWidth > 0 && (
-							<filter id="outline">
-								<feMorphology
-									in="SourceAlpha"
-									operator="dilate"
-									radius={strokeWidth}
-									result="dilated1"
-								/>
-								<feMorphology
-									in="dilated1"
-									operator="erode"
-									radius={strokeWidth * 0.15}
-									result="smoothed"
-								/>
-								<feFlood floodColor="#fff" result="white" />
-								<feComposite
-									in="white"
-									in2="smoothed"
-									operator="in"
-									result="outline"
-								/>
-								{shadow && (
-									<>
-										<feOffset in="dilated" dx="4" dy="4" result="offset" />
-										<feFlood floodColor="rgba(0, 0, 0, 0.3)" result="shadow" />
-										<feComposite
-											in="shadow"
-											in2="offset"
-											operator="in"
-											result="shadow-fill"
-										/>
-									</>
-								)}
-								<feMerge>
-									{shadow && <feMergeNode in="shadow-fill" />}
-									<feMergeNode in="outline" />
-									<feMergeNode in="SourceGraphic" />
-								</feMerge>
-							</filter>
-						)}
-					</defs>
-					<foreignObject width="100%" height="100%">
-						<div className="flex h-full w-full items-center justify-center">
-							<div
-								style={{
-									fontFamily,
-									fontSize: `${fontSize}em`,
-									filter: strokeWidth > 0 ? 'url(#outline)' : undefined,
-									color: 'currentColor',
-								}}
-							>
-								{text}
-							</div>
-						</div>
-					</foreignObject>
-				</svg>
+				<SVGOutline strokeWidth={strokeWidth} shadow={shadow}>
+					<div
+						style={{
+							fontFamily,
+							fontSize: `${fontSize}em`,
+							color: 'currentColor',
+						}}
+					>
+						{text}
+					</div>
+				</SVGOutline>
 			</AbsoluteFill>
 		</>
 	);
