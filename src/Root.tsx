@@ -19,6 +19,7 @@ import EnglishVocabulary from './stills/english-vocabulary';
 import EmojiStinger from './compositions/emoji-stinger';
 import OldTvStatic from './compositions/old-tv-static';
 import VTuber from './compositions/vtuber';
+import Borderizer from './compositions/borderizer';
 
 export const RemotionRoot: React.FC = () => {
 	return (
@@ -56,6 +57,7 @@ export const RemotionRoot: React.FC = () => {
 				<Thumbnail />
 				<Emoji />
 				<EnglishVocabulary />
+				<Borderizer />
 			</Folder>
 			<Folder name="stingers">
 				<EmojiStinger />
