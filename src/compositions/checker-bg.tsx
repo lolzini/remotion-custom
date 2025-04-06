@@ -1,7 +1,12 @@
 import clsx from 'clsx';
 import {AbsoluteFill, Composition, useCurrentFrame} from 'remotion';
+import {z} from 'zod';
 
-const Component = () => {
+const schema = z.object({
+	rotate: z.boolean(),
+});
+
+const Component = ({rotate}: z.infer<typeof schema>) => {
 	const frame = useCurrentFrame();
 	const translateX = -frame;
 
@@ -9,7 +14,11 @@ const Component = () => {
 		<>
 			<AbsoluteFill className="bg-gradient-to-bl from-neutral-50 to-neutral-200" />
 			<AbsoluteFill className="h-full w-full">
-				<section className="-translate-x-[120px] -translate-y-[240px] rotate-12">
+				<section
+					className={clsx('-translate-x-[120px] -translate-y-[240px]', {
+						'rotate-12': rotate,
+					})}
+				>
 					<div style={{transform: `translateX(${translateX}px)`}}>
 						{Array(16)
 							.fill(null)
@@ -45,5 +54,9 @@ export default () => (
 		height={1080}
 		durationInFrames={240}
 		fps={60}
+		schema={schema}
+		defaultProps={{
+			rotate: true,
+		}}
 	/>
 );
