@@ -20,6 +20,7 @@ import EmojiStinger from './compositions/emoji-stinger';
 import OldTvStatic from './compositions/old-tv-static';
 import VTuber from './compositions/vtuber';
 import Borderizer from './compositions/borderizer';
+import RainbowBackground from './compositions/rainbow-background';
 
 export const RemotionRoot: React.FC = () => {
 	return (
@@ -29,12 +30,15 @@ export const RemotionRoot: React.FC = () => {
 				<CoverX />
 				<CoverYouTube />
 			</Folder>
+
 			<Folder name="backgrounds">
 				<LineBg />
 				<CheckerBg />
 				<DotBg />
 				<DotBgOriginal />
+				<RainbowBackground />
 			</Folder>
+
 			<Folder name="posts">
 				<StreamSchedule />
 				<Goals2025 />
@@ -59,6 +63,7 @@ export const RemotionRoot: React.FC = () => {
 				<EnglishVocabulary />
 				<Borderizer />
 			</Folder>
+
 			<Folder name="stingers">
 				<EmojiStinger />
 				<OldTvStatic />
