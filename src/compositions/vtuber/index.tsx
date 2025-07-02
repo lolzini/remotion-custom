@@ -3,6 +3,7 @@ import {
 	visualizeAudio,
 	getAudioData,
 } from '@remotion/media-utils';
+import {zColor} from '@remotion/zod-types';
 import {
 	AbsoluteFill,
 	Audio,
@@ -15,11 +16,15 @@ import {
 	random,
 } from 'remotion';
 import {z} from 'zod';
-import {SVGOutline} from '../../components/svg-outline';
 
 const FPS = 30;
 
 const schema = z.object({
+	format: z.enum(['horizontal', 'vertical']),
+	backgroundColor: zColor().default('#00FF00').optional(),
+	scale: z.number().default(1),
+	translateX: z.number().default(0),
+	translateY: z.number().default(0),
 	audioFile: z.string(),
 	idleImage: z.string(),
 	speakingImage: z.string(),
@@ -39,6 +44,10 @@ export const VTuberComponent = ({
 	volumeSensitivity,
 	blinkFrequency,
 	blinkDuration,
+	scale,
+	translateX,
+	translateY,
+	backgroundColor,
 }: z.infer<typeof schema>) => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
@@ -103,23 +112,26 @@ export const VTuberComponent = ({
 
 	return (
 		<>
-			<AbsoluteFill>
-				<SVGOutline strokeWidth={4} shadow={true} viewBox="0 0 1920 1080">
-					<div
+			<AbsoluteFill
+				className="items-center justify-center"
+				style={{
+					backgroundColor,
+				}}
+			>
+				<div
+					style={{
+						transform: `translateY(${jumpOffset}px) scale(${scale}) translate(${translateX}px, ${translateY}px)`,
+					}}
+				>
+					<Img
+						src={staticFile(currentImage)}
 						style={{
-							transform: `translateY(${jumpOffset}px)`,
+							width: '100%',
+							height: 'auto',
+							objectFit: 'contain',
 						}}
-					>
-						<Img
-							src={staticFile(currentImage)}
-							style={{
-								width: '100%',
-								maxWidth: '75%',
-								margin: '0 auto',
-							}}
-						/>
-					</div>
-				</SVGOutline>
+					/>
+				</div>
 			</AbsoluteFill>
 			<Audio src={staticFile(audioFile)} />
 		</>
@@ -137,14 +149,18 @@ export default function () {
 			durationInFrames={10 * FPS} // Default duration, will be dynamically set by calculateMetadata based on audio length
 			schema={schema}
 			defaultProps={{
-				audioFile: 'vo/vo-02.wav',
-				idleImage: 'lolzini/thinking-open.png',
-				speakingImage: 'lolzini/talking-open.png',
-				idleImageClosed: 'lolzini/thinking-closed.png',
-				speakingImageClosed: 'lolzini/talking-closed.png',
+				format: 'vertical',
+				audioFile: 'memos/practikana test.m4a',
+				idleImage: 'lolzini_stroke/thinking-open.png',
+				speakingImage: 'lolzini_stroke/talking-open.png',
+				idleImageClosed: 'lolzini_stroke/thinking-closed.png',
+				speakingImageClosed: 'lolzini_stroke/talking-closed.png',
 				volumeSensitivity: 0.056, // Default sensitivity, will be overridden by calculateMetadata
 				blinkFrequency: 0.05, // 5% chance to blink on each blink check
 				blinkDuration: 5, // Blink lasts for 5 frames
+				scale: 2,
+				translateX: 0,
+				translateY: 0,
 			}}
 			calculateMetadata={calculateVolumeMetadata}
 		/>
@@ -153,10 +169,73 @@ export default function () {
 
 // Helpers ----------
 
+// Helper function to get video dimensions based on format
+const getVideoDimensions = (format: 'horizontal' | 'vertical') => {
+	return format === 'vertical'
+		? {width: 1080, height: 1920} // 9:16 portrait
+		: {width: 1920, height: 1080}; // 16:9 landscape
+};
+
+// Helper function to calculate volume sensitivity based on average volume
+const calculateVolumeSensitivity = (averageVolume: number): number => {
+	let volumeSensitivity: number;
+
+	if (averageVolume < 0.05) {
+		// For very quiet audio
+		volumeSensitivity = averageVolume * 0.8; // 80% of average
+	} else if (averageVolume < 0.1) {
+		// For quiet audio
+		volumeSensitivity = averageVolume * 0.6; // 60% of average
+	} else if (averageVolume < 0.2) {
+		// For moderate audio
+		volumeSensitivity = averageVolume * 0.5; // 50% of average
+	} else {
+		// For loud audio
+		volumeSensitivity = averageVolume * 0.4; // 40% of average
+	}
+
+	// Clamp between 0.01 and 0.2
+	return Math.max(0.01, Math.min(0.2, volumeSensitivity));
+};
+
+// Helper function to analyze audio volume
+const analyzeAudioVolume = async (
+	audioData: any,
+	durationInFrames: number,
+	fps: number,
+) => {
+	let totalVolume = 0;
+	let sampleCount = 0;
+
+	// Sample the audio at regular intervals
+	const sampleInterval = Math.max(1, Math.floor(durationInFrames / 100)); // Take up to 100 samples
+
+	for (let frame = 0; frame < durationInFrames; frame += sampleInterval) {
+		const visualization = visualizeAudio({
+			audioData,
+			frame,
+			fps,
+			numberOfSamples: 1,
+		});
+
+		if (visualization[0] > 0) {
+			totalVolume += visualization[0];
+			sampleCount++;
+		}
+	}
+
+	// Calculate the average volume
+	const averageVolume = sampleCount > 0 ? totalVolume / sampleCount : 0;
+	return averageVolume;
+};
+
 // Calculate metadata for dynamic volume sensitivity based on audio file
 const calculateVolumeMetadata: CalculateMetadataFunction<
 	z.infer<typeof schema>
 > = async ({props}) => {
+	// Get video dimensions based on format
+	const dimensions = getVideoDimensions(props.format);
+
 	try {
 		// Get the audio data from the file
 		const audioData = await getAudioData(staticFile(props.audioFile));
@@ -167,57 +246,25 @@ const calculateVolumeMetadata: CalculateMetadataFunction<
 		console.info(
 			`Audio duration: ${audioData.durationInSeconds}s, ${durationInFrames} frames`,
 		);
-		let totalVolume = 0;
-		let sampleCount = 0;
 
-		// Sample the audio at regular intervals
-		const sampleInterval = Math.max(1, Math.floor(durationInFrames / 100)); // Take up to 100 samples
-
-		for (let frame = 0; frame < durationInFrames; frame += sampleInterval) {
-			const visualization = visualizeAudio({
-				audioData,
-				frame,
-				fps,
-				numberOfSamples: 1,
-			});
-
-			if (visualization[0] > 0) {
-				totalVolume += visualization[0];
-				sampleCount++;
-			}
-		}
-
-		// Calculate the average volume
-		const averageVolume = sampleCount > 0 ? totalVolume / sampleCount : 0;
-
-		// Set sensitivity threshold based on average volume
-		// If the average volume is very low, we need a lower threshold
-		// If the average volume is high, we need a higher threshold
-		let volumeSensitivity;
-
-		if (averageVolume < 0.05) {
-			// For very quiet audio
-			volumeSensitivity = averageVolume * 0.8; // 80% of average
-		} else if (averageVolume < 0.1) {
-			// For quiet audio
-			volumeSensitivity = averageVolume * 0.6; // 60% of average
-		} else if (averageVolume < 0.2) {
-			// For moderate audio
-			volumeSensitivity = averageVolume * 0.5; // 50% of average
-		} else {
-			// For loud audio
-			volumeSensitivity = averageVolume * 0.4; // 40% of average
-		}
+		// Analyze audio volume
+		const averageVolume = await analyzeAudioVolume(
+			audioData,
+			durationInFrames,
+			fps,
+		);
+		const volumeSensitivity = calculateVolumeSensitivity(averageVolume);
 
 		console.info(
 			`Audio analysis: Average volume = ${averageVolume}, Sensitivity = ${volumeSensitivity}`,
 		);
 
 		return {
-			durationInFrames: durationInFrames,
+			durationInFrames,
+			...dimensions,
 			props: {
 				...props,
-				volumeSensitivity: Math.max(0.01, Math.min(0.2, volumeSensitivity)),
+				volumeSensitivity,
 			},
 		};
 	} catch (err) {
@@ -232,7 +279,8 @@ const calculateVolumeMetadata: CalculateMetadataFunction<
 			);
 
 			return {
-				durationInFrames: durationInFrames,
+				durationInFrames,
+				...dimensions,
 				props: {
 					...props,
 					volumeSensitivity: 0.056, // Fallback to default
@@ -242,6 +290,7 @@ const calculateVolumeMetadata: CalculateMetadataFunction<
 			console.error('Failed to get audio duration:', audioErr);
 			return {
 				durationInFrames: 10 * FPS, // Last resort fallback
+				...dimensions,
 				props: {
 					...props,
 					volumeSensitivity: 0.056, // Fallback to default
